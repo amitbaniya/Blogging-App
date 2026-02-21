@@ -14,7 +14,10 @@ export default function UserLoader({
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(userAsync())
+        async function fetchUser() {
+            await dispatch(userAsync())
+        }
+        fetchUser();
     }, []);
 
     return (

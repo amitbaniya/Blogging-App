@@ -7,28 +7,29 @@ type userType = {
   email: string;
   isAuthenticated: boolean;
   loading: boolean;
-  error: any;
+  error: boolean;
 };
 
 const initialState: userType = {
   name: "",
   email: "",
   isAuthenticated: false,
-  loading: false,
-  error: null,
+  loading: true,
+  error: false,
 };
 
-export const loginAsync = createAsyncThunk<userType, authFormTypes>(
-  "auth/loginAsync",
-  async (authFormTypes) => {
-    try {
-      const user = await loginSubmit(authFormTypes);
-      return user;
-    } catch (error) {
-      console.log(error);
-    }
-  },
-);
+export const loginAsync = createAsyncThunk<
+  userType,
+  authFormTypes,
+  { rejectValue: string }
+>("auth/loginAsync", async (authFormTypes, thunkAPI) => {
+  try {
+    const user = await loginSubmit(authFormTypes);
+    return user;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data.message ?? error);
+  }
+});
 
 export const userAsync = createAsyncThunk<
   userType,
@@ -63,13 +64,19 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginAsync.pending, (state) => {
-        state.loading = true;
+        state.loading = false;
       })
       .addCase(loginAsync.fulfilled, (state, action) => {
         state.name = action.payload.name;
         state.email = action.payload.email;
         state.isAuthenticated = true;
         state.loading = false;
+      })
+      .addCase(loginAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = true;
+        console.log(action.payload ?? "SOmething went wrong");
+        throw new Error(action.payload ?? "Something went wrong");
       })
       .addCase(userAsync.pending, (state) => {
         state.loading = true;
@@ -82,17 +89,22 @@ const authSlice = createSlice({
       })
       .addCase(userAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ?? "Something went wrong";
+        console.log(action.payload ?? "SOmething went wrong");
+        state.error = true;
       })
       .addCase(logoutAsync.pending, (state) => {
         state.loading = true;
       })
       .addCase(logoutAsync.fulfilled, (state) => {
-        return initialState;
+        state.name = "";
+        state.email = "";
+        state.isAuthenticated = false;
+        state.loading = false;
       })
       .addCase(logoutAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ?? "Something went wrong";
+        console.log(action.payload ?? "SOmething went wrong");
+        state.error = true;
       });
   },
 });

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 }
 export default function AuthPage() {
     return (
-        <main className="grid w-full h-screen grid-cols-10 max-md:grid-cols-1 text-black">
+        <main className="grid w-full h-screen grid-cols-10 max-md:grid-cols-1 text-black p-0">
             <div className=' h-screen p-10 pr-40 max-md:h-32 col-span-4 flex flex-col justify-between'
                 style={{
                     backgroundImage: `url(${authBackground.src})`,

@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { loginAsync } from '@/state/user/authSlice';
 import Link from 'next/link';
 import classes from './auth.module.css'
+import { showToast } from 'nextjs-toast-notify';
 
 
 export default function AuthForm() {
@@ -31,10 +32,22 @@ export default function AuthForm() {
                 email: formData.get('email') as string,
                 password: formData.get('password') as string,
             }
-            dispatch(loginAsync(data))
-            if (!user.loading && user.isAuthenticated) {
-                redirect('/blog')
+            try {
+                setIsLoading(true)
+                await dispatch(loginAsync(data))
+            } catch (error: any) {
+                const err: string = error ?? "Something went wrong"
+                showToast.error(err, {
+                    duration: 4000,
+                    position: "top-center",
+                    transition: "bounceIn",
+                    progress: false
+                });
+                console.log(error)
+            } finally {
+                setIsLoading(false)
             }
+
         }
         else {
             const data: authFormTypes = {
@@ -121,7 +134,7 @@ export default function AuthForm() {
 
                     <div className=' gap-1 flex flex-row justify-center my-10 font-medium opacity-65'>
                         <span className=''>
-                            {isLogin ? 'New to our platform' : 'Already have an account?'}
+                            {isLogin ? 'New to our platform?' : 'Already have an account?'}
                         </span>
                         <button
                             type='button'

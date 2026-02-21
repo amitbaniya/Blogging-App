@@ -1,11 +1,8 @@
 'use client'
 import '@/app/globals.css'
 import { useAppSelector } from '@/state/hooks'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import { redirect } from 'next/navigation'
 
-const inter = Inter({ subsets: ['latin'] })
 
 
 export default function AuthLayout({
@@ -14,7 +11,7 @@ export default function AuthLayout({
     children: React.ReactNode
 }) {
     const user = useAppSelector((state) => state.auth)
-    if (user.loading) {
+    if (user.loading && !user.error) {
         return (<p>Loading...</p>)
     }
 
@@ -29,4 +26,6 @@ export default function AuthLayout({
             </>
         )
     }
+
+
 }

@@ -17,7 +17,6 @@ export async function register(req, res) {
     email,
     password: hashedPassword
   })
-
   res.status(201).json({ message: "User registered successfully" })
 }
 
@@ -49,9 +48,30 @@ export async function login(req, res) {
     })
     .json({
       user: {
-        id: user._id,
         name: user.name,
         email: user.email
       }
     })
 }
+
+export async function me(req, res) {
+  const userId = req.user.id;
+  const user = await User.findById(userId).select('name email -_id')
+  if (!user) {
+    return res.status(401).json({ message: "User not found" })
+  }
+
+  return res.status(200).json({ user, message: "User retrieved succesfully" })
+}
+
+export async function logout(req, res) {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+
+
+  return res.status(200).json({ message: "Logged out successfully" })
+}
+

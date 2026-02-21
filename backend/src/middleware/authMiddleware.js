@@ -1,4 +1,4 @@
-import { verify } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 
 export function protect(req, res, next) {
   const token = req.cookies.token
@@ -8,7 +8,9 @@ export function protect(req, res, next) {
   }
 
   try {
-    verify(token, process.env.JWT_SECRET)
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+    req.user = decoded
     next()
   } catch (error) {
     res.status(401).json({ message: "Invalid token" })

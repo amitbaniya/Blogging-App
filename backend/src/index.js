@@ -4,6 +4,7 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import connectDB from "./config/db.js"
 import authRoutes from "./routes/authRoutes.js"
+import blogRoutes from "./routes/blogRoutes.js"
 
 config()
 connectDB()
@@ -18,6 +19,7 @@ app.use(json())
 app.use(cookieParser())
 
 app.use("/api/auth", authRoutes)
+app.use("/api/blog", blogRoutes)
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`)

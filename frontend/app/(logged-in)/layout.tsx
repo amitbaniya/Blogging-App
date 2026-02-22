@@ -1,6 +1,5 @@
 'use client'
-import '@/app/globals.css'
-import MainHeader from '@/components/main-header'
+import MainHeader from '@/components/header/main-header'
 import { useAppSelector } from '@/state/hooks'
 import { redirect } from 'next/navigation'
 import { showToast } from "nextjs-toast-notify";

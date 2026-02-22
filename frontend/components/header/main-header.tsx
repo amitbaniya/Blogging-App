@@ -1,10 +1,10 @@
 
+
 import Image from "next/image"
-import { AuthProfile } from "./auth/auth-profile"
 import mainIcon from "@/app/icon.png"
 import Link from "next/link"
+import { AuthHeader } from "./auth-profile-header";
 export default function MainHeader() {
-
 
     return (
         <header className="w-full flex justify-between bg-amber-50 p-3 text-black items-center">
@@ -15,7 +15,7 @@ export default function MainHeader() {
                 </div>
                 <h1 className="text-black">Ink & Insights</h1>
             </Link>
-            <AuthProfile />
+            <AuthHeader />
 
         </header>
     )

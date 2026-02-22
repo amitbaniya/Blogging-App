@@ -1,0 +1,17 @@
+.select_field {
+    background-color: '#F8FAFC';
+    width: 200px;
+}
+
+.input_field {
+    border: none;
+    font-size: 50px;
+    font-weight: bold;
+    background-color: #FCFDFE !important;
+}
+
+.input_field::placeholder {
+    font-size: 50px;
+    font-weight: bold;
+    opacity: 50%;
+}

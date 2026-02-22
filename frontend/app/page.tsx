@@ -1,7 +1,7 @@
 
 'use client'
 
-import MainHeader from "@/components/main-header"
+import MainHeader from "@/components/header/main-header"
 
 export default function Home() {
 
@@ -10,8 +10,6 @@ export default function Home() {
       <MainHeader />
       <main>
         <h1>HomePage</h1>
-
-
       </main>
     </>
   )

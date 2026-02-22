@@ -55,13 +55,9 @@ export async function login(req, res) {
 }
 
 export async function me(req, res) {
-  const userId = req.user.id;
-  const user = await User.findById(userId).select('name email -_id')
-  if (!user) {
-    return res.status(401).json({ message: "User not found" })
-  }
+  const { name, email } = req.user
 
-  return res.status(200).json({ user, message: "User retrieved succesfully" })
+  return res.status(200).json({ user: { name, email }, message: "User retrieved succesfully" })
 }
 
 export async function logout(req, res) {

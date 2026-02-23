@@ -33,9 +33,9 @@ export default function LoggedInLayout({
     }
 
     return (
-        <>
+        <div className='flex flex-col h-screen'>
             <MainHeader />
             {content}
-        </>
+        </div>
     )
 }

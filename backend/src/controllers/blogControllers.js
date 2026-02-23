@@ -1,5 +1,4 @@
 
-import User from "../models/userModel.js"
 import Blog from "../models/blogModel.js"
 
 export async function create(req, res) {
@@ -15,33 +14,45 @@ export async function create(req, res) {
     }
 }
 
+export async function getBlog(req, res) {
+    try {
+
+        const blogId = req.params.blogId;
+
+        const blog = await Blog.findById(blogId)
+            .select('author title content imageUrl published createdAt updatedAt -_id')
+            .populate('author', '_id, name');
+
+
+        if (!blog) {
+            return res.status(404).json({ message: "No Blog found!" })
+        }
+
+        return res.status(200).json({
+            blog,
+            message: "Blog retrived successfully"
+        })
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: "Internal Server error." })
+    }
+}
+
 export async function save(req, res) {
     try {
-        const { blogId, title, content, imageUrl } = req.body;
-
-        const blog = await Blog.findByIdAndUpdate(blogId, { title, content, imageUrl }, { new: true })
+        const { title, content, imageUrl } = req.body;
+        const blogId = req.params.blogId;
+        const blog = await Blog.findByIdAndUpdate(blogId, { title, content, imageUrl }, { returnDocument: 'after' })
         if (!blog) {
             return res.status(404).json({ message: "Blog not found!" })
         }
-        return res.status(200).json({ message: "Blog saved successfully" })
+        return res.status(200).json({ updatedAt: blog.updatedAt, message: "Blog saved successfully" })
     }
     catch (error) {
         return res.status(500).json({ message: "Something went wrong." })
     }
 
-}
-
-async function getBlogInternal(blogId) {
-    try {
-
-
-        const blog = await Blog.findById(blogId)
-
-        return blog;
-    }
-    catch (error) {
-        throw new Error(error)
-    }
 }
 
 export async function publish(req, res) {
@@ -49,38 +60,19 @@ export async function publish(req, res) {
     try {
         const blogId = req.params.blogId;
 
-        const blog = await getBlogInternal(blogId);
+        const blog = await Blog.findById(blogId);
+
         if (!blog) {
             return res.status(404).json({ message: "No Blog found!" })
         }
 
-        blog.published = true;
-
+        blog.published = !blog.published;
         await blog.save();
         return res.status(200).json({ message: "Blog published successfully" })
     }
     catch (error) {
         console.log(error)
         return res.status(500).json({ message: "Something went wrong." })
-    }
-}
-
-export async function getBlog(req, res) {
-    try {
-
-        const blogId = req.params.blogId;
-
-        const blog = await getBlogInternal(blogId);
-
-        if (!blog) {
-            return res.status(404).json({ message: "No Blog found!" })
-        }
-
-        return res.status(200).json({ blog, message: "Blog retrived successfully" })
-    }
-    catch (error) {
-        console.log(error)
-        return res.status(500).json({ message: "Internal Server error." })
     }
 }
 

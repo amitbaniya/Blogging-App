@@ -1,13 +1,21 @@
 .select_field {
-    background-color: '#F8FAFC';
+    background-color: #FCFDFE !important;
     width: 200px;
 }
 
 .input_field {
     border: none;
-    font-size: 50px;
+    font-size: 40px;
     font-weight: bold;
     background-color: #FCFDFE !important;
+    width: 100%
+}
+
+.content_field {
+    border: none;
+    background-color: #FCFDFE !important;
+    width: 100%;
+    text-align: justify;
 }
 
 .input_field::placeholder {

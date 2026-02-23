@@ -5,9 +5,9 @@ import { create, getBlog, publish, save } from "../controllers/blogControllers.j
 const router = Router()
 
 router.post("/create", protect, create)
-router.patch("/save", protect, save)
-router.get("/get", getBlog)
-router.patch("publish", protect, publish)
+router.patch("/save/:blogId", protect, save)
+router.get("/get/:blogId", getBlog)
+router.patch("/publish/:blogId", protect, publish)
 router.get("/get-all", save)
 
 export default router

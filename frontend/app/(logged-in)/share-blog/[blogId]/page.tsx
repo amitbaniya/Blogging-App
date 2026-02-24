@@ -15,7 +15,7 @@ export default async function ShareBlog({ params }: { params: Promise<{ blogId: 
 
 
     return (
-        <main className='p-5 flex flex-col justify-center items-center'>
+        <main className='p-5 flex flex-col justify-center items-center h-full'>
             <BlogForm blog={blog} />
         </main>
 

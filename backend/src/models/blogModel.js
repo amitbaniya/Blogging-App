@@ -11,7 +11,9 @@ const blogSchema = new mongoose.Schema(
         title: { type: String },
         content: { type: String },
         imageUrl: { type: String },
-        published: { type: Boolean }
+        published: { type: Boolean },
+        rating: { type: Number, default: 0 },
+        commentCount: { type: Number, default: 0 }
     },
     { timestamps: true }
 )

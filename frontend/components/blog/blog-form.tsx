@@ -9,6 +9,7 @@ import TextArea from "antd/es/input/TextArea";
 import { CloudFilled, CloudSyncOutlined } from '@ant-design/icons';
 import { showToast } from "nextjs-toast-notify";
 import PublishButton from "./publish-btn";
+import ContentEditor from "./blog-content-editor";
 
 
 export default function BlogForm({ blog }: { blog: blogDataTypes }) {
@@ -67,7 +68,7 @@ export default function BlogForm({ blog }: { blog: blogDataTypes }) {
         return date
     }
     return (
-        <form className=' flex flex-col gap-5 w-full max-w-250 '>
+        <form className=' flex flex-col gap-5 w-full max-w-250 h-full'>
             <div className="flex flex-row items-center justify-between flex-wrap">
                 <div className="flex flex-col opacity-50">
                     <p className="text-sm"><span className="text-base font-bold">Created on:</span> {getConvertedDate(blogData.createdAt)}</p>
@@ -102,15 +103,11 @@ export default function BlogForm({ blog }: { blog: blogDataTypes }) {
                 onChange={handleChange}
             />
 
-            <div className='flex: 1'>
-                <TextArea
-                    className={classes.content_field}
-                    autoSize={{ minRows: 20, maxRows: 40 }}
-                    placeholder='Write your story here...'
-                    name='content'
-                    value={blogData.content} onChange={handleChange} />
+
+            <div className='flex-1'>
+                <ContentEditor content={blogData.content} setBlogData={setBlogData} />
             </div>
-            <span>ℹ️ TIP: USE MARKDOWN FOR FASTER FORMATTING</span>
+
         </form>
     )
 }

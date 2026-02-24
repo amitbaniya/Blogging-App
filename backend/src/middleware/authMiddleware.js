@@ -3,7 +3,6 @@ import User from "../models/userModel.js"
 
 export async function protect(req, res, next) {
   const token = req.cookies.token
-
   if (!token) {
     return res.status(401).json({ message: "Not authorized" })
   }

@@ -5,12 +5,15 @@ export type authFormTypes = {
 };
 
 export type blogDataTypes = {
+  _id?: string;
   title: string;
   content: string;
   imageUrl: string;
   published: boolean;
   createdAt: string;
   updatedAt: string;
+  rating?: number;
+  commentCount?: number;
   author: {
     _id: string;
     name: string;

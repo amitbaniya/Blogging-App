@@ -3,20 +3,37 @@
 import classes from "./blog-form.module.css"
 import { blogDataTypes, RouteParams } from "@/types";
 import { useEffect, useState } from "react";
-import { saveBlog } from "@/lib/blog";
-import { useParams } from "next/navigation";
+import { getBlog, saveBlog } from "@/lib/blog";
+import { notFound, useParams } from "next/navigation";
 import TextArea from "antd/es/input/TextArea";
 import { CloudFilled, CloudSyncOutlined } from '@ant-design/icons';
 import { showToast } from "nextjs-toast-notify";
 import PublishButton from "./publish-btn";
 import ContentEditor from "./blog-content-editor";
+import CustomLoading from "../loading/loading";
+import { useRouter } from "next/navigation";
 
 
-export default function BlogForm({ blog }: { blog: blogDataTypes }) {
+export default function BlogForm() {
+    const router = useRouter()
     const params = useParams<RouteParams>()
     const blogId: string = params.blogId;
+    const [blogDataLoading, setBlogDataLoading] = useState(true)
 
-    const [blogData, setBlogData] = useState<blogDataTypes>(blog)
+    const [blogData, setBlogData] = useState<blogDataTypes>(
+        {
+            title: "",
+            content: "",
+            imageUrl: "",
+            published: false,
+            createdAt: "",
+            updatedAt: "",
+            author: {
+                _id: "",
+                name: "",
+            }
+        }
+    )
     const [saveLoading, setSaveLoading] = useState(false)
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>
@@ -26,6 +43,22 @@ export default function BlogForm({ blog }: { blog: blogDataTypes }) {
         setBlogData(prev => ({ ...prev, [name]: value }))
 
     }
+
+    useEffect(() => {
+        async function fetchBlogData() {
+            try {
+                setBlogDataLoading(true)
+                const blog = await getBlog(blogId)
+                setBlogData(blog)
+                setBlogDataLoading(false)
+            } catch (error) {
+                console.log("Hello", error)
+                router.replace('/')
+            }
+
+        }
+        fetchBlogData();
+    }, []);
 
     useEffect(() => {
 
@@ -67,8 +100,13 @@ export default function BlogForm({ blog }: { blog: blogDataTypes }) {
         })
         return date
     }
+    if (blogDataLoading) {
+        return (<CustomLoading />)
+    }
+
+
     return (
-        <form className=' flex flex-col gap-5 w-full max-w-250 h-full'>
+        <form className=' flex flex-col gap-5 w-full max-w-250 h-full p-5'>
             <div className="flex flex-row items-center justify-between flex-wrap">
                 <div className="flex flex-col opacity-50">
                     <p className="text-sm"><span className="text-base font-bold">Created on:</span> {getConvertedDate(blogData.createdAt)}</p>

@@ -8,6 +8,8 @@ import GetStarted from "@/components/landing/get-started";
 import DefaultFooter from "@/components/Footer/default-footer";
 import Link from "next/link";
 
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage() {
   let data;
   try {

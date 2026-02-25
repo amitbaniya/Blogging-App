@@ -11,7 +11,7 @@ export default function BlogCard(
 ) {
     return (
         <Link
-            href={`/share-blog/${blog._id}`}
+            href={`/blog/${blog._id}`}
             className="w-full flex hover:scale-102 transition-all duration-500 ease-in-out "
         >
             <Card

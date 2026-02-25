@@ -20,9 +20,8 @@ export async function getBlog(req, res) {
         const blogId = req.params.blogId;
 
         const blog = await Blog.findById(blogId)
-            .select('author title content imageUrl published createdAt updatedAt -_id')
+            .select('author title content imageUrl published createdAt updatedAt -_id publishedOn')
             .populate('author', '_id, name');
-
 
         if (!blog) {
             return res.status(404).json({ message: "No Blog found!" })
@@ -67,6 +66,7 @@ export async function publish(req, res) {
         }
 
         blog.published = !blog.published;
+        blog.publishedOn = new Date();
         await blog.save();
         return res.status(200).json({ message: "Blog published successfully" })
     }
@@ -85,7 +85,7 @@ export async function getAll(req, res) {
         const skip = (pageNum - 1) * limit;
 
         const blogList = await Blog.find({ published: true })
-            .select('author title content imageUrl rating commentCount published createdAt updatedAt')
+            .select('author title content imageUrl rating commentCount published createdAt updatedAt publishedOn')
             .populate('author', '_id, name')
             .sort({ 'createdAt': -1 })
             .skip(skip).limit(limit);

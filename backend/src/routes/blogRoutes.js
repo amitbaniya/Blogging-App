@@ -7,8 +7,9 @@ const router = Router()
 
 router.post("/create", protect, create)
 router.patch("/save/:blogId", protect, save)
-router.get("/get/:blogId", protect, blogProtect, getBlog)
+router.get("/get/publisher/:blogId", protect, blogProtect, getBlog)
 router.patch("/publish/:blogId", protect, publish)
 router.get("/get", getAll)
+router.get("/get/:blogId", getBlog)
 
 export default router

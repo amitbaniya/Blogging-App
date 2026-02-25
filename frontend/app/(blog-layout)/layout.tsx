@@ -1,4 +1,5 @@
 import '@/app/globals.css'
+import MainHeader from '@/components/header/main-header'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
@@ -14,6 +15,7 @@ export default function AuthLayout({
 }) {
     return (
         <>
+            <MainHeader />
             {children}
         </>
     )

@@ -87,6 +87,7 @@ export async function getAll(req, res) {
         const blogList = await Blog.find({ published: true })
             .select('author title content imageUrl rating commentCount published createdAt updatedAt')
             .populate('author', '_id, name')
+            .sort({ 'createdAt': -1 })
             .skip(skip).limit(limit);
 
         if (blogList.length === 0) {

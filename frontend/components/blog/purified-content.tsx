@@ -1,6 +1,6 @@
 'use client'
 
-import DOMPurify from 'dompurify';
+import DOMPurify from 'isomorphic-dompurify';
 import './blog.css'
 
 export default function PurifiedContent({ content, short = false }: { content: string, short: boolean }) {

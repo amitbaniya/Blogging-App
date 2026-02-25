@@ -3,6 +3,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import UserLoader from '@/components/auth/user-loader'
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,7 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <StoreProvider>
           <UserLoader>
-            {children}
+            <AntdRegistry>{children}</AntdRegistry>
           </UserLoader>
         </StoreProvider></body>
     </html>

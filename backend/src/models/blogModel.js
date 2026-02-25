@@ -12,6 +12,7 @@ const blogSchema = new mongoose.Schema(
         content: { type: String },
         imageUrl: { type: String },
         published: { type: Boolean },
+        publishedOn: { type: Date },
         rating: { type: Number, default: 0 },
         commentCount: { type: Number, default: 0 }
     },

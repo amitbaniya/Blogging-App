@@ -11,9 +11,9 @@ export async function createBlog() {
   }
 }
 
-export async function getBlog(blogId: string) {
+export async function getPublisherBlog(blogId: string) {
   try {
-    const response = await api.get(`/blog/get/${blogId}`);
+    const response = await api.get(`/blog/get/publisher/${blogId}`);
     return response.data.blog;
   } catch (error: any) {
     console.log("get Error", error);
@@ -47,6 +47,16 @@ export async function getBlogList() {
     return response.data.blogList;
   } catch (error: any) {
     console.log(error.message);
+    throw error;
+  }
+}
+
+export async function getBlog(blogId: string) {
+  try {
+    const response = await api.get(`/blog/get/${blogId}`);
+    return response.data.blog;
+  } catch (error: any) {
+    console.log("get Error", error);
     throw error;
   }
 }

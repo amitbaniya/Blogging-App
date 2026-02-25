@@ -80,21 +80,52 @@ export async function publish(req, res) {
 export async function getAll(req, res) {
 
     try {
-        const { pageNum = 1 } = req.body || {};
+        const { pageNum = 1, searchText, startDate, endDate } = req.query || {};
         const limit = 9;
         const skip = (pageNum - 1) * limit;
 
-        const blogList = await Blog.find({ published: true })
+        const filter = { published: true };
+        if (searchText && searchText != 'undefined') {
+            filter.$or = [
+                { title: { $regex: searchText, $options: 'i' } },
+                { content: { $regex: searchText, $options: 'i' } },
+            ];
+        }
+
+        if (startDate || endDate) {
+            const dateFilter = {};
+            if (startDate) {
+                dateFilter.$gte = new Date(startDate);
+            }
+            if (endDate) {
+                const end = new Date(endDate);
+                end.setHours(23, 59, 59, 999);
+                dateFilter.$lte = end;
+            }
+            if (Object.keys(dateFilter).length > 0) {
+                filter.publishedOn = dateFilter;
+            }
+        }
+
+        const totalBlogs = await Blog.countDocuments(filter)
+        const totalPages = Math.ceil(totalBlogs / limit)
+
+        const blogList = await Blog.find(filter)
             .select('author title content imageUrl rating commentCount published createdAt updatedAt publishedOn')
-            .populate('author', '_id, name')
-            .sort({ 'createdAt': -1 })
-            .skip(skip).limit(limit);
+            .populate('author', '_id name')
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+
 
         if (blogList.length === 0) {
             return res.status(404).json({ message: "No Blogs found!" })
         }
 
-        return res.status(200).json({ blogList, message: "Blogs retrieved successfully" })
+        return res.status(200).json({
+            blogList, totalPages, message: "Blogs retrieved successfully"
+        })
     }
     catch (error) {
         console.log(error)

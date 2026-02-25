@@ -9,8 +9,10 @@ import { usePathname } from "next/navigation";
 import { createBlog } from "@/lib/blog";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useMounted } from "@/lib/hooks";
 
 export function AuthHeader() {
+    const mounted = useMounted()
     const pathname = usePathname();
     const auth = useAppSelector((state) => state.auth)
     let shareBlogPage: boolean = pathname.includes('share-blog/')
@@ -29,6 +31,9 @@ export function AuthHeader() {
 
     }
 
+    if (!mounted) {
+        return null
+    }
     return (
         <div className="flex gap-3 items-center pr-4 text-white">
             {!shareBlogPage && <button onClick={handleShareBlog}

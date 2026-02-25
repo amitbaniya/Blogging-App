@@ -1,7 +1,8 @@
+'use client'
 import { Avatar } from "antd";
 import { UserOutlined } from '@ant-design/icons';
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/state/hooks";
+import { useAppDispatch } from "@/state/hooks";
 import { logoutAsync } from "@/state/user/authSlice";
 import Link from "next/link";
 

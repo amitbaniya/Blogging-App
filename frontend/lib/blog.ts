@@ -41,10 +41,17 @@ export async function publishBlog(blogId: string) {
   }
 }
 
-export async function getBlogList() {
+export async function getBlogList(
+  searchText: string = "",
+  startDate: string = "",
+  endDate: string = "",
+  currentPage: number = 1,
+) {
   try {
-    const response = await api.get("/blog/get");
-    return response.data.blogList;
+    const response = await api.get(
+      `/blog/get?searchText=${searchText}&startDate=${startDate}&endDate=${endDate}&pageNum=${currentPage}`,
+    );
+    return response.data;
   } catch (error: any) {
     console.log(error.message);
     throw error;

@@ -6,14 +6,19 @@ import { getBlogList } from "@/lib/blog";
 import LandingCover from "@/components/landing/landing-cover";
 import GetStarted from "@/components/landing/get-started";
 import DefaultFooter from "@/components/Footer/default-footer";
+import Link from "next/link";
 
 export default async function HomePage() {
-  let blogList;
+  let data;
   try {
-    blogList = await getBlogList()
+    data = await getBlogList()
   } catch (error) {
     console.log(error)
   }
+
+  if (!data) return null
+
+  const { blogList } = data
 
   return (
     <>
@@ -21,6 +26,9 @@ export default async function HomePage() {
       <main className="flex flex-col justify-center items-center">
         <LandingCover />
         <BlogList blogList={blogList} />
+        <div className="flex justify-center p-5">
+          <Link href='/browse' className="p-5 border rounded-xl animate-bounce ">Browse More</Link>
+        </div>
         <GetStarted />
         <DefaultFooter />
       </main>

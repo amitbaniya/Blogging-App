@@ -1,5 +1,6 @@
 
 import Blog from "../models/blogModel.js"
+import { v2 as cloudinary } from 'cloudinary';
 
 export async function create(req, res) {
     try {
@@ -130,6 +131,36 @@ export async function getAll(req, res) {
     catch (error) {
         console.log(error)
         return res.status(500).json({ message: "Something went wrong." })
+    }
+}
+
+
+export const uploadBlogPicture = async (req, res) => {
+    try {
+        const blogId = req.params.blogId;
+
+        if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+        const imageUrl = req.file.path;
+        const secretUrl = req.file.filename;
+
+        const blog = await Blog.findById(blogId);
+        if (!blog) {
+            const result = await cloudinary.uploader.destroy(secretUrl);
+            console.log("Delete result:", result);
+            return res.status(404).json({ message: "Blog not found" });
+        }
+        if (blog.imageSecretUrl) {
+            const previousImage = await cloudinary.uploader.destroy(blog.imageSecretUrl);
+            console.log("Delete result Previous Image:", previousImage);
+        }
+        blog.imageUrl = imageUrl;
+        blog.imageSecretUrl = secretUrl;
+        const savedBlog = await blog.save();
+
+        return res.status(200).json({ updatedAt: savedBlog.updatedAt, message: 'Blog picture uploaded successfully' })
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: "Server Error" });
     }
 }
 

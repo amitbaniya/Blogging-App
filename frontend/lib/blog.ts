@@ -67,3 +67,18 @@ export async function getBlog(blogId: string) {
     throw error;
   }
 }
+
+export async function savePicture(blogId: string, file: File) {
+  try {
+    const formData = new FormData();
+    formData.append("blog", file);
+    const response = await api.patch(
+      `/blog/picture-upload/${blogId}`,
+      formData,
+    );
+    return response.data;
+  } catch (error: any) {
+    console.log(error.message);
+    throw error;
+  }
+}

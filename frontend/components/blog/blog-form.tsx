@@ -13,6 +13,7 @@ import ContentEditor from "./blog-content-editor";
 import CustomLoading from "../loading/loading";
 import { useRouter } from "next/navigation";
 import { getConvertedDate, getSavedAgo } from "@/utils";
+import PictureUpload from "./picture-upload";
 
 
 export default function BlogForm() {
@@ -148,7 +149,9 @@ export default function BlogForm() {
             <div className='flex-1'>
                 <ContentEditor content={blogData.content} setBlogData={setBlogData} />
             </div>
+            <PictureUpload image={blogData.imageUrl} setBlogData={setBlogData} />
 
         </form>
     )
 }
+

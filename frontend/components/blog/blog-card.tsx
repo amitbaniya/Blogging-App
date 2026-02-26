@@ -9,6 +9,7 @@ import { CommentOutlined } from '@ant-design/icons';
 export default function BlogCard(
     { blog }: { blog: blogDataTypes }
 ) {
+    const defaultImage = process.env.NEXT_PUBLIC_DEFAULT_CLOUDINARY_IMAGE;
     return (
         <Link
             href={`/blog/${blog._id}`}
@@ -27,7 +28,7 @@ export default function BlogCard(
                     <img
                         draggable={false}
                         alt="example"
-                        src="https://res.cloudinary.com/dcplldqtr/image/upload/v1759996125/h9ypyt8vm0eezusm0sh0.jpg"
+                        src={blog.imageUrl ? blog.imageUrl : defaultImage}
                         className="h-50 object-cover"
                     />
                 }

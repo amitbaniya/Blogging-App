@@ -2,6 +2,7 @@
 import Blog from "../models/blogModel.js"
 
 export async function blogProtect(req, res, next) {
+
     const blogId = req.params.blogId;
     const userId = req.user._id
     try {

@@ -14,7 +14,8 @@ const blogSchema = new mongoose.Schema(
         published: { type: Boolean },
         publishedOn: { type: Date },
         rating: { type: Number, default: 0 },
-        commentCount: { type: Number, default: 0 }
+        commentCount: { type: Number, default: 0 },
+        imageSecretUrl: { type: String }
     },
     { timestamps: true }
 )

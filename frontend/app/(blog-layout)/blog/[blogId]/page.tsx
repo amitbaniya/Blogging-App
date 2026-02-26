@@ -9,7 +9,7 @@ import { redirect } from "next/navigation"
 export default async function BlogPage({ params }: { params: Promise<{ blogId: string }> }) {
     const { blogId } = await params
     let blog
-
+    const defaultImage = process.env.NEXT_PUBLIC_DEFAULT_CLOUDINARY_IMAGE;
     try {
         if (blogId) {
             blog = await getBlog(blogId)
@@ -32,11 +32,13 @@ export default async function BlogPage({ params }: { params: Promise<{ blogId: s
                             <p className="opacity-65 text-sm font-light">Published On {getConvertedDate(blog.publishedOn)}</p>
                         </div>
                     </div>
-                    <div className="w-full h-100 relative overflow-hidden rounded-2xl">
-                        <Image src="https://res.cloudinary.com/dcplldqtr/image/upload/v1759996125/h9ypyt8vm0eezusm0sh0.jpg"
+
+                    <div className="w-full h-100 relative overflow-hidden rounded-2xl bg-[#F7DFC7]">
+                        <Image src={blog.imageUrl ? blog.imageUrl : defaultImage}
                             alt={blog.title} fill
-                            className="object-cover hover:scale-103 transition-all ease-in-out duration-300" />
+                            className=" hover:scale-103 transition-all ease-in-out duration-300 object-contain" />
                     </div>
+
                     <div className="w-full rounded-2xl  bg-white border border-gray-400/40 p-15 text-lg">
                         <PurifiedContent content={blog.content} short={false} />
                     </div>

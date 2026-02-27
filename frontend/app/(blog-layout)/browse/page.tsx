@@ -64,7 +64,7 @@ export default async function BrowsePage({ searchParams }: PageProps) {
                                     <input type="hidden" name="startDate" value={startDate} />
                                     <input type="hidden" name="endDate" value={endDate} />
                                     <input type="hidden" name="pageNum" value={currentPage - 1} />
-                                    <button className="px-4 py-2 border rounded-lg">
+                                    <button className="px-4 py-2 border rounded-lg cursor-pointer">
                                         Prev
                                     </button>
                                 </form>
@@ -80,7 +80,7 @@ export default async function BrowsePage({ searchParams }: PageProps) {
                                     <input type="hidden" name="startDate" value={startDate} />
                                     <input type="hidden" name="endDate" value={endDate} />
                                     <input type="hidden" name="pageNum" value={currentPage + 1} />
-                                    <button className="px-4 py-2 border rounded-lg">
+                                    <button className="px-4 py-2 border rounded-lg cursor-pointer">
                                         Next
                                     </button>
                                 </form>

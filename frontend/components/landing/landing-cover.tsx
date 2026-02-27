@@ -1,5 +1,6 @@
 import { Avatar } from "antd";
 import { UserOutlined } from '@ant-design/icons';
+import CreateNewBlogButton from "../ui/create-button";
 
 export default function LandingCover() {
     return (
@@ -14,14 +15,9 @@ export default function LandingCover() {
                         A minimalist space for thoughts, ideas, and stories. Read public feeds freely, or sign in to join the conversation and publish your own work.
                     </p>
                     <div className='w-full flex items-center gap-3'>
-                        <button
-                            className="bg-orange-600
-                            text-white p-2 px-3 rounded-xl font-bold 
-                            opacity-80 shadow-lg
-                            shadow-orange-500/50 cursor-pointer 
-                            hover:scale-102 transition-all
-                            duration-500 ease-in-out">
-                            Start writing</button>
+                        <CreateNewBlogButton colorStyle="bg-orange-600 shadow-lg shardow-orange-500/50">
+                            Start Writing
+                        </CreateNewBlogButton>
                         <Avatar size={30} icon={<UserOutlined />} />
                         <span className='text-xs opacity-70'>Joined by 12,000+ creators.</span>
                     </div>

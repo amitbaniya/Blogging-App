@@ -1,7 +1,6 @@
 import BlogList from "@/components/blog/blog-list"
 import { getBlogList } from "@/lib/blog"
 import { Input } from "antd";
-import { notFound } from "next/navigation";
 
 
 type PageProps = {

@@ -1,3 +1,5 @@
+import CreateNewBlogButton from "../ui/create-button";
+
 export default function GetStarted() {
     return (
         <div className="bg-[#ede2d8] w-full flex justify-center ">
@@ -13,10 +15,8 @@ export default function GetStarted() {
                     </p>
                 </div>
                 <div className='w-full flex justify-center items-center gap-3'>
-                    <button className="bg-[#10B981]
-            text-white p-2 px-3 rounded-xl font-bold opacity-80  cursor-pointer 
-            hover:scale-102 transition-all
-            duration-500 ease-in-out">Get Started</button>
+                    <CreateNewBlogButton colorStyle="bg-[#10B981]">Get Started</CreateNewBlogButton>
+
                 </div>
 
             </div>

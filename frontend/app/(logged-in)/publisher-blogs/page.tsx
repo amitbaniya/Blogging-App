@@ -109,7 +109,7 @@ export default function BrowsePage() {
                         <BlogList blogList={blogList} publisher={true} />
                         <div className="flex justify-center gap-4 my-8">
                             {currentPage > 1 && (
-                                <button className="px-4 py-2 border rounded-lg" onClick={() => handlePageChange(currentPage - 1)}>
+                                <button className="px-4 py-2 border rounded-lg cursor-pointer" onClick={() => handlePageChange(currentPage - 1)}>
                                     Prev
                                 </button>
                             )}
@@ -119,7 +119,7 @@ export default function BrowsePage() {
                             </span>
 
                             {currentPage < totalPages && (
-                                <button className="px-4 py-2 border rounded-lg" onClick={() => handlePageChange(currentPage + 1)}>
+                                <button className="px-4 py-2 border rounded-lg cursor-pointer" onClick={() => handlePageChange(currentPage + 1)}>
                                     Next
                                 </button>
                             )}

@@ -16,10 +16,11 @@ export async function protect(req, res, next) {
     if (!user) {
       return res.status(404).json({ message: "User not found." })
     }
-
     req.user = user
+
     next()
   } catch (error) {
+    console.log(error)
     res.status(401).json({ message: "Invalid token" })
   }
 }

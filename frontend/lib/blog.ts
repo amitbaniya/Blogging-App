@@ -1,5 +1,6 @@
 import { blogDataTypes } from "@/types";
 import api from "./axios";
+import { notFound } from "next/navigation";
 
 export async function createBlog() {
   try {
@@ -64,6 +65,9 @@ export async function getBlog(blogId: string) {
     return response.data.blog;
   } catch (error: any) {
     console.log("get Error", error);
+    if (error.status === 404) {
+      notFound();
+    }
     throw error;
   }
 }
@@ -75,6 +79,23 @@ export async function savePicture(blogId: string, file: File) {
     const response = await api.patch(
       `/blog/picture-upload/${blogId}`,
       formData,
+    );
+    return response.data;
+  } catch (error: any) {
+    console.log(error.message);
+    throw error;
+  }
+}
+
+export async function getPublisherBlogList(
+  searchText: string = "",
+  startDate: string = "",
+  endDate: string = "",
+  currentPage: number = 1,
+) {
+  try {
+    const response = await api.get(
+      `/blog/publisher/get?searchText=${searchText}&startDate=${startDate}&endDate=${endDate}&pageNum=${currentPage}`,
     );
     return response.data;
   } catch (error: any) {

@@ -1,6 +1,7 @@
 import BlogList from "@/components/blog/blog-list"
 import { getBlogList } from "@/lib/blog"
 import { Input } from "antd";
+import { notFound } from "next/navigation";
 
 
 type PageProps = {
@@ -23,9 +24,12 @@ export default async function BrowsePage({ searchParams }: PageProps) {
     } catch (error) {
         console.log(error)
     }
-    if (!data) return null
-
-    const { blogList, totalPages } = data
+    let blogList = []
+    let totalPages = 1
+    if (data) {
+        blogList = data.blogList;
+        totalPages = data.totalPages
+    }
 
     return (
         <>

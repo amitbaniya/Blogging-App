@@ -18,10 +18,10 @@ export default async function HomePage() {
     console.log(error)
   }
 
-  if (!data) return null
-
-  const { blogList } = data
-
+  let blogList = []
+  if (data) {
+    blogList = data.blogList;
+  }
   return (
     <>
       <MainHeader />

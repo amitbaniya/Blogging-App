@@ -51,37 +51,39 @@ export default async function BrowsePage({ searchParams }: PageProps) {
                         <input type="hidden" name="pageNum" value={currentPage} />
                     </form>
 
-                    <BlogList blogList={blogList} />
-                    <div className="flex justify-center gap-4 my-8">
+                    <BlogList blogList={blogList} publisher={false} />
+                    {blogList.length !== 0 &&
+                        <div className="flex justify-center gap-4 my-8">
 
-                        {currentPage > 1 && (
-                            <form>
-                                <input type="hidden" name="searchText" value={searchText} />
-                                <input type="hidden" name="startDate" value={startDate} />
-                                <input type="hidden" name="endDate" value={endDate} />
-                                <input type="hidden" name="pageNum" value={currentPage - 1} />
-                                <button className="px-4 py-2 border rounded-lg">
-                                    Prev
-                                </button>
-                            </form>
-                        )}
+                            {currentPage > 1 && (
+                                <form>
+                                    <input type="hidden" name="searchText" value={searchText} />
+                                    <input type="hidden" name="startDate" value={startDate} />
+                                    <input type="hidden" name="endDate" value={endDate} />
+                                    <input type="hidden" name="pageNum" value={currentPage - 1} />
+                                    <button className="px-4 py-2 border rounded-lg">
+                                        Prev
+                                    </button>
+                                </form>
+                            )}
 
-                        <span className="px-4 py-2">
-                            Page {currentPage} of {totalPages}
-                        </span>
+                            <span className="px-4 py-2">
+                                Page {currentPage} of {totalPages}
+                            </span>
 
-                        {currentPage && currentPage < totalPages && (
-                            <form>
-                                <input type="hidden" name="searchText" value={searchText} />
-                                <input type="hidden" name="startDate" value={startDate} />
-                                <input type="hidden" name="endDate" value={endDate} />
-                                <input type="hidden" name="pageNum" value={currentPage + 1} />
-                                <button className="px-4 py-2 border rounded-lg">
-                                    Next
-                                </button>
-                            </form>
-                        )}
-                    </div>
+                            {currentPage && currentPage < totalPages && (
+                                <form>
+                                    <input type="hidden" name="searchText" value={searchText} />
+                                    <input type="hidden" name="startDate" value={startDate} />
+                                    <input type="hidden" name="endDate" value={endDate} />
+                                    <input type="hidden" name="pageNum" value={currentPage + 1} />
+                                    <button className="px-4 py-2 border rounded-lg">
+                                        Next
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+                    }
                 </div>
             </main >
         </>

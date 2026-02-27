@@ -7,12 +7,12 @@ import { CommentOutlined } from '@ant-design/icons';
 
 
 export default function BlogCard(
-    { blog }: { blog: blogDataTypes }
+    { blog, publisher }: { blog: blogDataTypes, publisher: boolean }
 ) {
     const defaultImage = process.env.NEXT_PUBLIC_DEFAULT_CLOUDINARY_IMAGE;
     return (
         <Link
-            href={`/blog/${blog._id}`}
+            href={publisher ? `/share-blog/${blog._id}` : `/blog/${blog._id}`}
             className="w-full flex hover:scale-102 transition-all duration-500 ease-in-out "
         >
             <Card

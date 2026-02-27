@@ -17,7 +17,6 @@ export async function create(req, res) {
 
 export async function getBlog(req, res) {
     try {
-
         const blogId = req.params.blogId;
 
         const blog = await Blog.findById(blogId)
@@ -120,9 +119,7 @@ export async function getAll(req, res) {
 
 
 
-        if (blogList.length === 0) {
-            return res.status(404).json({ message: "No Blogs found!" })
-        }
+
 
         return res.status(200).json({
             blogList, totalPages, message: "Blogs retrieved successfully"
@@ -161,6 +158,57 @@ export const uploadBlogPicture = async (req, res) => {
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ message: "Server Error" });
+    }
+}
+
+export async function getAllPublisher(req, res) {
+    try {
+        const userId = req.user._id
+        const { pageNum = 1, searchText, startDate, endDate } = req.query || {};
+        const limit = 9;
+        const skip = (pageNum - 1) * limit;
+
+        const filter = { author: userId };
+        if (searchText && searchText != 'undefined') {
+            filter.$or = [
+                { title: { $regex: searchText, $options: 'i' } },
+                { content: { $regex: searchText, $options: 'i' } },
+            ];
+        }
+
+        if (startDate || endDate) {
+            const dateFilter = {};
+            if (startDate) {
+                dateFilter.$gte = new Date(startDate);
+            }
+            if (endDate) {
+                const end = new Date(endDate);
+                end.setHours(23, 59, 59, 999);
+                dateFilter.$lte = end;
+            }
+            if (Object.keys(dateFilter).length > 0) {
+                filter.publishedOn = dateFilter;
+            }
+        }
+
+        const totalBlogs = await Blog.countDocuments(filter)
+        const totalPages = Math.ceil(totalBlogs / limit)
+
+        const blogList = await Blog.find(filter)
+            .select('author title content imageUrl rating commentCount published createdAt updatedAt publishedOn')
+            .populate('author', '_id name')
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+
+        return res.status(200).json({
+            blogList, totalPages, message: "Blogs retrieved successfully"
+        })
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: "Something went wrong." })
     }
 }
 

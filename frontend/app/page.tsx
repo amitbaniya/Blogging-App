@@ -27,7 +27,7 @@ export default async function HomePage() {
       <MainHeader />
       <main className="flex flex-col justify-center items-center">
         <LandingCover />
-        <BlogList blogList={blogList} />
+        <BlogList blogList={blogList} publisher={false} />
         <div className="flex justify-center p-5">
           <Link href='/browse' className="p-5 border rounded-xl animate-bounce ">Browse More</Link>
         </div>

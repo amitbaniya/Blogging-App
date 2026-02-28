@@ -21,7 +21,7 @@ export async function getBlog(req, res) {
 
         const blog = await Blog.findById(blogId)
             .select('author title content imageUrl published createdAt updatedAt -_id publishedOn')
-            .populate('author', '_id, name');
+            .populate('author', '_id, name imageUrl');
 
         if (!blog) {
             return res.status(404).json({ message: "No Blog found!" })
@@ -112,7 +112,7 @@ export async function getAll(req, res) {
 
         const blogList = await Blog.find(filter)
             .select('author title content imageUrl rating commentCount published createdAt updatedAt publishedOn')
-            .populate('author', '_id name')
+            .populate('author', '_id name imageUrl')
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit);
@@ -196,7 +196,7 @@ export async function getAllPublisher(req, res) {
 
         const blogList = await Blog.find(filter)
             .select('author title content imageUrl rating commentCount published createdAt updatedAt publishedOn')
-            .populate('author', '_id name')
+            .populate('author', '_id name imageUrl')
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit);

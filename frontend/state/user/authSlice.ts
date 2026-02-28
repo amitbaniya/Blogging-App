@@ -1,10 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { authFormTypes } from "@/types";
-import { getUserInformation, loginSubmit, logout } from "@/lib/auth";
+import { authFormTypes, userDataTypes } from "@/types";
+import { getUserInformation, loginSubmit, logout, saveUser } from "@/lib/auth";
 
 type userType = {
   name: string;
   email: string;
+  imageUrl: string;
+  bio: string;
+  linkedin: string;
   isAuthenticated: boolean;
   loading: boolean;
   error: boolean;
@@ -13,6 +16,9 @@ type userType = {
 const initialState: userType = {
   name: "",
   email: "",
+  imageUrl: "string",
+  bio: "",
+  linkedin: "",
   isAuthenticated: false,
   loading: true,
   error: false,
@@ -57,6 +63,19 @@ export const logoutAsync = createAsyncThunk<
   }
 });
 
+export const updateAsync = createAsyncThunk<
+  userType,
+  userDataTypes,
+  { rejectValue: string }
+>("auth/updateAsync", async (userDataTypes, thunkAPI) => {
+  try {
+    const user = await saveUser(userDataTypes);
+    return user;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data.message ?? error);
+  }
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -69,6 +88,9 @@ const authSlice = createSlice({
       .addCase(loginAsync.fulfilled, (state, action) => {
         state.name = action.payload.name;
         state.email = action.payload.email;
+        state.bio = action.payload.bio;
+        state.linkedin = action.payload.linkedin;
+        state.imageUrl = action.payload.imageUrl;
         state.isAuthenticated = true;
         state.loading = false;
       })
@@ -84,6 +106,9 @@ const authSlice = createSlice({
       .addCase(userAsync.fulfilled, (state, action) => {
         state.name = action.payload.name;
         state.email = action.payload.email;
+        state.bio = action.payload.bio;
+        state.linkedin = action.payload.linkedin;
+        state.imageUrl = action.payload.imageUrl;
         state.isAuthenticated = true;
         state.loading = false;
       })
@@ -98,6 +123,9 @@ const authSlice = createSlice({
       .addCase(logoutAsync.fulfilled, (state) => {
         state.name = "";
         state.email = "";
+        state.bio = "";
+        state.linkedin = "";
+        state.imageUrl = "";
         state.isAuthenticated = false;
         state.loading = false;
       })
@@ -105,6 +133,25 @@ const authSlice = createSlice({
         state.loading = false;
         console.log(action.payload ?? "SOmething went wrong");
         state.error = true;
+      })
+      .addCase(updateAsync.pending, (state, action) => {
+        const { name, email, bio, linkedin } = action.meta.arg;
+        state.name = name;
+        state.email = email;
+        state.bio = bio;
+        state.linkedin = linkedin;
+
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(updateAsync.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(updateAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = true;
+
+        console.log(action.payload ?? "Something went wrong");
       });
   },
 });

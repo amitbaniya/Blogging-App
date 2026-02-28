@@ -13,7 +13,7 @@ type UploaderProps = {
     setBlogData: Dispatch<SetStateAction<blogDataTypes>>
 };
 export default function PictureUpload({ image, setBlogData }: UploaderProps) {
-    const defaultImage = process.env.NEXT_PUBLIC_DEFAULT_CLOUDINARY_IMAGE;
+
     const params = useParams<RouteParams>()
     const blogId: string = params.blogId;
 

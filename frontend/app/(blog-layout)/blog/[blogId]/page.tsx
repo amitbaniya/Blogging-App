@@ -4,6 +4,7 @@ import { getConvertedDate } from "@/utils"
 import { Avatar } from "antd"
 import Image from "next/image"
 import { redirect } from "next/navigation"
+import { UserOutlined } from '@ant-design/icons';
 
 
 export default async function BlogPage({ params }: { params: Promise<{ blogId: string }> }) {
@@ -26,7 +27,11 @@ export default async function BlogPage({ params }: { params: Promise<{ blogId: s
                         {blog.title}
                     </h1>
                     <div className="flex items-center gap-3 ">
-                        <Avatar size={60} src="https://res.cloudinary.com/dcplldqtr/image/upload/v1748832796/o6z442axowtlaowd1udj.gif" />
+                        <Avatar
+                            size={60}
+                            src={blog.author.imageUrl}
+                            icon={<UserOutlined />}
+                        />
                         <div className="flex flex-col">
                             <p className="font-semibold">{blog.author.name}</p>
                             <p className="opacity-65 text-sm font-light">Published On {getConvertedDate(blog.publishedOn)}</p>

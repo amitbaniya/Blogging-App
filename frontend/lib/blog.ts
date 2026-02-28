@@ -75,7 +75,7 @@ export async function getBlog(blogId: string) {
 export async function savePicture(blogId: string, file: File) {
   try {
     const formData = new FormData();
-    formData.append("blog", file);
+    formData.append("image", file);
     const response = await api.patch(
       `/blog/picture-upload/${blogId}`,
       formData,

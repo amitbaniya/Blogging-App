@@ -1,4 +1,4 @@
-import { authFormTypes } from "@/types";
+import { authFormTypes, userDataTypes } from "@/types";
 import api from "./axios";
 
 export async function registerSubmit(data: authFormTypes) {
@@ -37,6 +37,28 @@ export async function logout() {
     return response.data;
   } catch (error: any) {
     console.log("logout error:", error.message);
+    throw error;
+  }
+}
+
+export async function saveProfilePicture(file: File) {
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+    const response = await api.patch("/auth/picture-upload", formData);
+    return response.data;
+  } catch (error: any) {
+    console.log(error.message);
+    throw error;
+  }
+}
+
+export async function saveUser(user: userDataTypes) {
+  try {
+    const response = await api.patch("/auth/update", user);
+    return response.data.updatedAt;
+  } catch (error: any) {
+    console.log(error.message);
     throw error;
   }
 }

@@ -3,7 +3,7 @@ import { Avatar, Card } from 'antd';
 import PurifiedContent from "./purified-content";
 import Link from "next/link";
 import { Rate } from 'antd';
-import { CommentOutlined } from '@ant-design/icons';
+import { CommentOutlined, UserOutlined } from '@ant-design/icons';
 
 
 export default function BlogCard(
@@ -34,7 +34,11 @@ export default function BlogCard(
                 }
             >
                 <div className="flex items-center gap-3 font-semibold">
-                    <Avatar src="https://res.cloudinary.com/dcplldqtr/image/upload/v1748832796/o6z442axowtlaowd1udj.gif" />
+
+                    <Avatar
+                        src={blog.author.imageUrl}
+                        icon={<UserOutlined />}
+                    />
                     <p className="opacity-65">{blog.author.name}</p>
                 </div>
 

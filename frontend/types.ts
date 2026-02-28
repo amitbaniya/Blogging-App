@@ -17,9 +17,17 @@ export type blogDataTypes = {
   author: {
     _id: string;
     name: string;
+    imageUrl: string;
   };
 };
 
 export type RouteParams = {
   blogId: string;
+};
+
+export type userDataTypes = {
+  name: string;
+  email: string;
+  bio: string;
+  linkedin: string;
 };

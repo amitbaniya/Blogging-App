@@ -35,6 +35,7 @@ export default function BlogForm() {
             author: {
                 _id: "",
                 name: "",
+                imageUrl: ""
             }
         }
     )

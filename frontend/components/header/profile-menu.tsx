@@ -2,13 +2,13 @@
 import { Avatar } from "antd";
 import { UserOutlined } from '@ant-design/icons';
 import { useState } from "react";
-import { useAppDispatch } from "@/state/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/hooks";
 import { logoutAsync } from "@/state/user/authSlice";
 import Link from "next/link";
 
 export default function ProfileMenu() {
     const [menuOpen, setMenuOpen] = useState(false)
-
+    const user = useAppSelector(state => state.auth)
     const dispatch = useAppDispatch()
 
     async function handleLogout() {
@@ -18,7 +18,7 @@ export default function ProfileMenu() {
 
     return (
         <div className="relative cursor-pointer ">
-            <Avatar size={40} icon={<UserOutlined />} onClick={() => setMenuOpen(prev => !prev)} />
+            <Avatar size={40} icon={<UserOutlined />} src={user.imageUrl} onClick={() => setMenuOpen(prev => !prev)} />
             {menuOpen &&
                 <div className="absolute top-[110%] 
                             right-0 border bg-[#FFFBEB]

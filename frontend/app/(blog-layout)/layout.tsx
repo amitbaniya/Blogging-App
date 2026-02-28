@@ -5,7 +5,8 @@ import { Inter } from 'next/font/google'
 
 
 export const metadata: Metadata = {
-    title: 'Auth',
+    title: 'Blog',
+    description: 'Browse blogs and read the blogs as well.'
 }
 
 export default function AuthLayout({

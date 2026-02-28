@@ -49,15 +49,18 @@ export async function login(req, res) {
     .json({
       user: {
         name: user.name,
-        email: user.email
+        email: user.email,
+        bio: user.bio,
+        linkedin: user.linkedin,
+        imageUrl: user.imageUrl,
       }
     })
 }
 
 export async function me(req, res) {
-  const { name, email } = req.user
+  const { name, email, linkedin, bio, imageUrl } = req.user
 
-  return res.status(200).json({ user: { name, email }, message: "User retrieved succesfully" })
+  return res.status(200).json({ user: { name, email, linkedin, bio, imageUrl }, message: "User retrieved succesfully" })
 }
 
 export async function logout(req, res) {
@@ -69,5 +72,50 @@ export async function logout(req, res) {
 
 
   return res.status(200).json({ message: "Logged out successfully" })
+}
+
+
+export async function update(req, res) {
+
+  try {
+    const { name, email, bio, linkedin } = req.body
+    const user = req.user;
+
+    user.name = name
+    user.email = email
+    user.bio = bio
+    user.linkedin = linkedin
+
+    await user.save();
+    return res.status(200).json({ message: "User saved successfully" })
+  }
+  catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: "Server Error." })
+  }
+}
+
+export const uploadUserPicture = async (req, res) => {
+  try {
+    const user = req.user;
+
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    const imageUrl = req.file.path;
+    const secretUrl = req.file.filename;
+
+    if (user.imageSecret) {
+      const previousImage = await cloudinary.uploader.destroy(user.imageSecret);
+      console.log("Delete result Previous Image:", previousImage);
+    }
+    user.imageUrl = imageUrl;
+    user.imageSecret = secretUrl;
+    await user.save();
+
+
+    return res.status(200).json({ message: 'User picture saved successfully' })
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Server Error" });
+  }
 }
 

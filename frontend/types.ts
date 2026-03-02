@@ -31,3 +31,14 @@ export type userDataTypes = {
   bio: string;
   linkedin: string;
 };
+
+export type commentDataTypes = {
+  _id: string;
+  author: {
+    _id: string;
+    name: string;
+    imageUrl: string;
+  };
+  content: string;
+  createdAt: string;
+};

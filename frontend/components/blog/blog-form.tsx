@@ -12,7 +12,7 @@ import PublishButton from "./publish-btn";
 import ContentEditor from "./blog-content-editor";
 import CustomLoading from "../loading/loading";
 import { useRouter } from "next/navigation";
-import { getConvertedDate, getSavedAgo } from "@/utils";
+import { getConvertedDate, getAgo } from "@/utils";
 import PictureUpload from "./picture-upload";
 
 
@@ -118,7 +118,7 @@ export default function BlogForm() {
                 </div>
                 <div className="flex items-center gap-5">
                     <div className="opacity-50 flex items-center gap-3">
-                        <p className="text-sm"> {getSavedAgo(blogData.updatedAt)} </p>
+                        <p className="text-sm"> {getAgo(blogData.updatedAt)} </p>
                         {!saveLoading ?
                             <>
                                 <CloudFilled /> Saved

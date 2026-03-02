@@ -1,6 +1,7 @@
 
 import Blog from "../models/blogModel.js"
 import { v2 as cloudinary } from 'cloudinary';
+import Comment from "../models/commentModel.js";
 
 export async function create(req, res) {
     try {
@@ -19,14 +20,19 @@ export async function getBlog(req, res) {
     try {
         const blogId = req.params.blogId;
 
-        const blog = await Blog.findById(blogId)
+        const blogInfo = await Blog.findById(blogId)
             .select('author title content imageUrl published createdAt updatedAt -_id publishedOn')
-            .populate('author', '_id, name imageUrl');
+            .populate('author', '_id name imageUrl');
 
-        if (!blog) {
+        if (!blogInfo) {
             return res.status(404).json({ message: "No Blog found!" })
         }
 
+        const comments = await Comment.find({ blog: blogId })
+            .select('author content createdAt _id')
+            .populate('author', 'name imageUrl').sort('-createdAt')
+
+        const blog = { ...blogInfo.toObject(), comments }
         return res.status(200).json({
             blog,
             message: "Blog retrived successfully"

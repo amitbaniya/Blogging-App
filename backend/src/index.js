@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser"
 import connectDB from "./config/db.js"
 import authRoutes from "./routes/authRoutes.js"
 import blogRoutes from "./routes/blogRoutes.js"
+import commentRoutes from "./routes/commentRoutes.js"
 
 
 dotenv.config();
@@ -24,6 +25,8 @@ app.use(json())
 
 app.use("/api/auth", authRoutes)
 app.use("/api/blog", blogRoutes)
+app.use("/api/comment", commentRoutes)
+
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`)

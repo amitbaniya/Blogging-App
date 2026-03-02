@@ -3,6 +3,7 @@ import { authFormTypes, userDataTypes } from "@/types";
 import { getUserInformation, loginSubmit, logout, saveUser } from "@/lib/auth";
 
 type userType = {
+  _id: string;
   name: string;
   email: string;
   imageUrl: string;
@@ -14,6 +15,7 @@ type userType = {
 };
 
 const initialState: userType = {
+  _id: "",
   name: "",
   email: "",
   imageUrl: "string",
@@ -86,6 +88,7 @@ const authSlice = createSlice({
         state.loading = false;
       })
       .addCase(loginAsync.fulfilled, (state, action) => {
+        state._id = action.payload._id;
         state.name = action.payload.name;
         state.email = action.payload.email;
         state.bio = action.payload.bio;
@@ -104,6 +107,7 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(userAsync.fulfilled, (state, action) => {
+        state._id = action.payload._id;
         state.name = action.payload.name;
         state.email = action.payload.email;
         state.bio = action.payload.bio;

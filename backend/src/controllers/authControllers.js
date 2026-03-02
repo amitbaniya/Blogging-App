@@ -48,6 +48,7 @@ export async function login(req, res) {
     })
     .json({
       user: {
+        _id: user._id,
         name: user.name,
         email: user.email,
         bio: user.bio,
@@ -58,9 +59,9 @@ export async function login(req, res) {
 }
 
 export async function me(req, res) {
-  const { name, email, linkedin, bio, imageUrl } = req.user
+  const { _id, name, email, linkedin, bio, imageUrl } = req.user
 
-  return res.status(200).json({ user: { name, email, linkedin, bio, imageUrl }, message: "User retrieved succesfully" })
+  return res.status(200).json({ user: { _id, name, email, linkedin, bio, imageUrl }, message: "User retrieved succesfully" })
 }
 
 export async function logout(req, res) {

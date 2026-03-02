@@ -9,7 +9,7 @@ export function getConvertedDate(rawDate: string) {
   return date;
 }
 
-export function getSavedAgo(rawDate: string): string {
+export function getAgo(rawDate: string): string {
   const savedDate = new Date(rawDate);
   const now = new Date();
 

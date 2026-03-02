@@ -5,15 +5,18 @@ import { Avatar } from "antd"
 import Image from "next/image"
 import { redirect } from "next/navigation"
 import { UserOutlined } from '@ant-design/icons';
+import CommentSection from "@/components/blog/comment-section"
 
 
 export default async function BlogPage({ params }: { params: Promise<{ blogId: string }> }) {
     const { blogId } = await params
     let blog
+    let comments = []
     const defaultImage = process.env.NEXT_PUBLIC_DEFAULT_CLOUDINARY_IMAGE;
     try {
         if (blogId) {
             blog = await getBlog(blogId)
+            comments = blog.comments
         }
     } catch (error) {
         console.log(error)
@@ -47,18 +50,7 @@ export default async function BlogPage({ params }: { params: Promise<{ blogId: s
                     <div className="w-full rounded-2xl  bg-white border border-gray-400/40 p-15 text-lg">
                         <PurifiedContent content={blog.content} short={false} />
                     </div>
-                    <section className="">
-                        <div className="flex justify-between">
-                            <h2>Comments</h2>
-                            <div className="flex gap-3">Sort by: Newest</div>
-                        </div>
-                        <form>
-                            LEAVE A REVIEW
-                        </form>
-                        <div>
-                            COMMENTLIST
-                        </div>
-                    </section>
+                    <CommentSection initialComments={comments} />
                 </div>
 
 

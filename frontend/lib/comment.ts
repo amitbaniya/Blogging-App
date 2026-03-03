@@ -19,3 +19,15 @@ export async function deleteComment(commentId: string) {
     throw error;
   }
 }
+
+export async function getComments(blogId: string, lastCommentId: string) {
+  try {
+    const response = await api.get(
+      `/comment/more/${blogId}?lastCommentId=${lastCommentId}`,
+    );
+    return response.data.comments;
+  } catch (error: any) {
+    console.log(error.message);
+    throw error;
+  }
+}

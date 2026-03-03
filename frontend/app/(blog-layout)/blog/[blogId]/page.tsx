@@ -50,7 +50,7 @@ export default async function BlogPage({ params }: { params: Promise<{ blogId: s
                     <div className="w-full rounded-2xl  bg-white border border-gray-400/40 p-15 text-lg">
                         <PurifiedContent content={blog.content} short={false} />
                     </div>
-                    <CommentSection initialComments={comments} />
+                    <CommentSection initialComments={comments} commentCount={blog.commentCount} />
                 </div>
 
 

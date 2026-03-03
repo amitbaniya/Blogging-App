@@ -21,7 +21,7 @@ export async function getBlog(req, res) {
         const blogId = req.params.blogId;
 
         const blogInfo = await Blog.findById(blogId)
-            .select('author title content imageUrl published createdAt updatedAt -_id publishedOn')
+            .select('author title content imageUrl rating commentCount published createdAt updatedAt -_id publishedOn')
             .populate('author', '_id name imageUrl');
 
         if (!blogInfo) {
@@ -31,6 +31,7 @@ export async function getBlog(req, res) {
         const comments = await Comment.find({ blog: blogId })
             .select('author content createdAt _id')
             .populate('author', 'name imageUrl').sort('-createdAt')
+            .limit(5);
 
         const blog = { ...blogInfo.toObject(), comments }
         return res.status(200).json({
@@ -122,9 +123,6 @@ export async function getAll(req, res) {
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit);
-
-
-
 
 
         return res.status(200).json({

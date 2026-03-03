@@ -29,7 +29,7 @@ export default async function HomePage() {
         <LandingCover />
         <BlogList blogList={blogList} publisher={false} />
         <div className="flex justify-center p-5">
-          <Link href='/browse' className="p-5 border rounded-xl animate-bounce ">Browse More</Link>
+          <Link href='/browse' className="p-5 border rounded-xl animate-bounce cursor-pointer">Browse More</Link>
         </div>
         <GetStarted />
         <DefaultFooter />

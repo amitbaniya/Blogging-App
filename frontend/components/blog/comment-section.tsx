@@ -1,6 +1,6 @@
 'use client'
 
-import { createComment, deleteComment } from "@/lib/comment"
+import { createComment, deleteComment, getComments } from "@/lib/comment"
 import { useAppSelector } from "@/state/hooks"
 import { commentDataTypes, RouteParams } from "@/types"
 import { Avatar } from "antd"
@@ -15,20 +15,26 @@ import { showToast } from "nextjs-toast-notify"
 
 
 export default function CommentSection(
-    { initialComments }:
+    { initialComments, commentCount }:
         {
-            initialComments: commentDataTypes[]
+            initialComments: commentDataTypes[],
+            commentCount: string
         }
 ) {
     const mounted = useMounted()
     const params = useParams<RouteParams>()
+
+    const user = useAppSelector(state => state.auth)
+
     const blogId = params.blogId;
     const [comments, setComments] = useState(initialComments ?? [])
     const [comment, setComment] = useState('')
 
     const [isLoading, setIsLoading] = useState(false)
 
-    const user = useAppSelector(state => state.auth)
+
+    const [totalComments, setTotalComments] = useState<number>(parseInt(commentCount) ?? 0)
+
     async function addComment(e: FormEvent) {
         e.preventDefault();
         try {
@@ -45,8 +51,12 @@ export default function CommentSection(
             }, ...prev])
 
             const newComment = await createComment(blogId, comment)
-            setComments([newComment, ...initialComments])
+            setComments(prev => [
+                { ...newComment },
+                ...prev.filter(c => !c._id.startsWith("temp-"))
+            ])
             setComment('')
+            setTotalComments(prev => prev + 1)
         } catch (error) {
             console.log(error)
             setComments(initialComments)
@@ -67,7 +77,8 @@ export default function CommentSection(
         try {
             setIsLoading(true)
             await deleteComment(commentId)
-            setComments(comments.filter(comment => comment._id !== commentId));
+            setComments(prev => prev.filter(c => c._id !== commentId));
+            setTotalComments(prev => prev - 1)
         } catch (error) {
             console.log(error)
             showToast.error("Error deleting comments!", {
@@ -81,6 +92,39 @@ export default function CommentSection(
             setIsLoading(false)
         }
     }
+
+    async function getMoreComments() {
+        if (comments.length >= totalComments) {
+            showToast.info("No more comments to load!", {
+                duration: 4000,
+                position: "top-center",
+                transition: "bounceIn",
+                progress: false
+            })
+            return
+
+        }
+        try {
+            const lastRealComment = [...comments]
+                .reverse()
+                .find(c => !c._id.startsWith("temp-"));
+
+            if (!lastRealComment) return;
+
+            const newComments = await getComments(blogId, lastRealComment._id)
+            setComments(prev => [...prev, ...newComments])
+        } catch (error) {
+            console.log(error)
+            showToast.error("Error retrieving comments!", {
+                duration: 4000,
+                position: "top-center",
+                transition: "bounceIn",
+                progress: false
+            })
+        }
+    }
+
+
     if (!mounted) {
         return null
     }
@@ -116,21 +160,31 @@ export default function CommentSection(
             }
 
             <div className="flex flex-col">
-                {comments?.map((comment) => (
-                    <div className="flex gap-3 py-5" key={comment._id}>
-                        <Avatar size={40} icon={<UserOutlined />} src={comment.author.imageUrl} />
-                        <div className="w-full">
-                            <div className="flex justify-between items-center">
-                                <p className="font-bold">{comment.author.name} <span className="text-sm font-normal opacity-60">{getAgo(comment.createdAt)}</span></p>
-                                {comment.author._id === user._id &&
-                                    <button type="button" className="cursor-pointer disabled:opacity-50" onClick={() => { handleDelete(comment._id) }} disabled={isLoading}><DeleteOutlined /></button>
+                <>
+                    {comments?.map((comment) => (
+                        <div className="flex gap-3 py-5" key={comment._id}>
+                            <Avatar size={40} icon={<UserOutlined />} src={comment.author.imageUrl} />
+                            <div className="w-full">
+                                <div className="flex justify-between items-center">
+                                    <p className="font-bold">{comment.author.name} <span className="text-sm font-normal opacity-60">{getAgo(comment.createdAt)}</span></p>
+                                    {comment.author._id === user._id &&
+                                        <button type="button" className="cursor-pointer disabled:opacity-50" onClick={() => { handleDelete(comment._id) }} disabled={isLoading}><DeleteOutlined /></button>
 
-                                }
+                                    }
+                                </div>
+                                <p className="opacity-70">{comment.content}</p>
                             </div>
-                            <p className="opacity-70">{comment.content}</p>
                         </div>
+                    ))}
+                    <div className="flex justify-center p-5">
+                        {comments.length < totalComments ?
+                            <button type="button" className="p-5 border rounded-xl animate-bounce cursor-pointer"
+                                onClick={getMoreComments}>Load More</button>
+                            :
+                            <span className="font-bold opacity-50"> No more comments</span>
+                        }
                     </div>
-                ))}
+                </>
             </div>
         </section>
     )

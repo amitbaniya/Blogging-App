@@ -98,7 +98,7 @@ export default function RatingSection(
                                     No reviews yet.</>
                                 :
                                 <>
-                                    Curent Rating: {rating}
+                                    Curent Rating: {rating.toFixed(1)}
                                     {ratingCount != 0 && <span className="text-sm text-gray-500/60">({ratingCount} reviews)</span>}
                                 </>
                             }
@@ -121,7 +121,7 @@ export default function RatingSection(
                                     No reviews yet.</>
                                 :
                                 <>
-                                    Average Community Rating: {rating}
+                                    Average Community Rating: {rating.toFixed(1)}
                                     {ratingCount != 0 && <span className="text-sm text-gray-500/60">({ratingCount} reviews)</span>}
                                 </>
                             }

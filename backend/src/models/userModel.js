@@ -8,8 +8,9 @@ const userSchema = new mongoose.Schema(
     bio: { type: String },
     linkedin: { type: String },
     imageUrl: { type: String },
-    imageSecret: { type: String }
-
+    imageSecret: { type: String },
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Date }
   },
   { timestamps: true }
 )

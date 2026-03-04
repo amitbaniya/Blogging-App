@@ -92,10 +92,10 @@ export default function AuthForm() {
                     <div className='flex flex-row justify-between'>
                         <label className='text-[14px] font-bold opacity-80' htmlFor='password'>Password</label>
                         {isLogin &&
-                            <button className='text-xs font-bold text-orange-600  
+                            <Link href={'/auth/forgot-password'} className='text-xs font-bold text-orange-600  
                             hover:scale-102 transition-all
                             duration-500 ease-in-out cursor-pointer'>
-                                Forgot password?</button>
+                                Forgot password?</Link>
                         }
                     </div>
                     <Input.Password type='password' id="password" name="password"

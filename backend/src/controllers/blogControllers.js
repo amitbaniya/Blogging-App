@@ -21,7 +21,7 @@ export async function getBlog(req, res) {
         const blogId = req.params.blogId;
 
         const blogInfo = await Blog.findById(blogId)
-            .select('author title content imageUrl rating commentCount published createdAt updatedAt -_id publishedOn')
+            .select('author title content imageUrl rating ratingCount commentCount published createdAt updatedAt -_id publishedOn')
             .populate('author', '_id name imageUrl');
 
         if (!blogInfo) {

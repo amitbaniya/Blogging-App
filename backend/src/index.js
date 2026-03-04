@@ -8,6 +8,8 @@ import connectDB from "./config/db.js"
 import authRoutes from "./routes/authRoutes.js"
 import blogRoutes from "./routes/blogRoutes.js"
 import commentRoutes from "./routes/commentRoutes.js"
+import ratingRoutes from "./routes/ratingRoutes.js"
+
 
 
 dotenv.config();
@@ -26,6 +28,8 @@ app.use(json())
 app.use("/api/auth", authRoutes)
 app.use("/api/blog", blogRoutes)
 app.use("/api/comment", commentRoutes)
+app.use("/api/rating", ratingRoutes)
+
 
 
 app.listen(process.env.PORT, () => {

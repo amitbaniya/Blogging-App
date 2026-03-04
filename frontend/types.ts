@@ -13,6 +13,7 @@ export type blogDataTypes = {
   createdAt: string;
   updatedAt: string;
   rating?: number;
+  ratingCount?: number;
   commentCount?: number;
   author: {
     _id: string;

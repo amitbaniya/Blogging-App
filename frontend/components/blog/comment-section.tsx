@@ -31,6 +31,8 @@ export default function CommentSection(
     const [comment, setComment] = useState('')
 
     const [isLoading, setIsLoading] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
+
 
 
     const [totalComments, setTotalComments] = useState<number>(parseInt(commentCount) ?? 0)
@@ -75,7 +77,7 @@ export default function CommentSection(
     async function handleDelete(commentId: string) {
 
         try {
-            setIsLoading(true)
+            setIsDeleting(true)
             await deleteComment(commentId)
             setComments(prev => prev.filter(c => c._id !== commentId));
             setTotalComments(prev => prev - 1)
@@ -89,7 +91,7 @@ export default function CommentSection(
             })
         }
         finally {
-            setIsLoading(false)
+            setIsDeleting(false)
         }
     }
 
@@ -168,7 +170,7 @@ export default function CommentSection(
                                 <div className="flex justify-between items-center">
                                     <p className="font-bold">{comment.author.name} <span className="text-sm font-normal opacity-60">{getAgo(comment.createdAt)}</span></p>
                                     {comment.author._id === user._id &&
-                                        <button type="button" className="cursor-pointer disabled:opacity-50" onClick={() => { handleDelete(comment._id) }} disabled={isLoading}><DeleteOutlined /></button>
+                                        <button type="button" className="cursor-pointer disabled:opacity-50" onClick={() => { handleDelete(comment._id) }} disabled={isDeleting}><DeleteOutlined /></button>
 
                                     }
                                 </div>

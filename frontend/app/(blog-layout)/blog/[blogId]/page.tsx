@@ -6,6 +6,7 @@ import Image from "next/image"
 import { redirect } from "next/navigation"
 import { UserOutlined } from '@ant-design/icons';
 import CommentSection from "@/components/blog/comment-section"
+import RatingSection from "@/components/blog/rating-section"
 
 
 export default async function BlogPage({ params }: { params: Promise<{ blogId: string }> }) {
@@ -50,6 +51,7 @@ export default async function BlogPage({ params }: { params: Promise<{ blogId: s
                     <div className="w-full rounded-2xl  bg-white border border-gray-400/40 p-15 text-lg">
                         <PurifiedContent content={blog.content} short={false} />
                     </div>
+                    <RatingSection initialRating={blog.rating} initialRatingCount={blog.ratingCount} />
                     <CommentSection initialComments={comments} commentCount={blog.commentCount} />
                 </div>
 

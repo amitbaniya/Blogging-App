@@ -12,7 +12,7 @@ export async function protect(req, res, next) {
 
     const userId = decoded.id;
 
-    const user = await User.findById(userId)
+    const user = await User.findById(userId).select('-resetPasswordToken -resetPasswordExpires')
     if (!user) {
       return res.status(404).json({ message: "User not found." })
     }

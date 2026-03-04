@@ -62,3 +62,25 @@ export async function saveUser(user: userDataTypes) {
     throw error;
   }
 }
+
+export async function resetPasswordEmail(email: string) {
+  try {
+    const response = await api.post("/auth/reset-password-email", { email });
+    return response.data;
+  } catch (error: any) {
+    console.log(error.message);
+    throw error;
+  }
+}
+
+export async function resetPassword(token: string, newPassword: string) {
+  try {
+    const response = await api.patch(`/auth/reset-password/${token}`, {
+      newPassword,
+    });
+    return response.data;
+  } catch (error: any) {
+    console.log(error.message);
+    throw error;
+  }
+}

@@ -14,6 +14,7 @@ import CustomLoading from "../loading/loading";
 import { useRouter } from "next/navigation";
 import { getConvertedDate, getAgo } from "@/utils";
 import PictureUpload from "./picture-upload";
+import Revalidation from "@/lib/revalidation";
 
 
 export default function BlogForm() {
@@ -68,7 +69,7 @@ export default function BlogForm() {
 
         }
         fetchBlogData();
-    }, []);
+    }, [blogId]);
 
     async function saveData() {
         try {

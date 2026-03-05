@@ -13,6 +13,6 @@ router.patch("/publish/:blogId", protect, publish)
 router.get("/get", getAll)
 router.get("/publisher/get", protect, getAllPublisher)
 router.get("/get/:blogId", getBlog)
-router.patch("/picture-upload/:blogId", protect, blogProtect, imageUploadMiddleware.single('blog'), uploadBlogPicture)
+router.patch("/picture-upload/:blogId", protect, blogProtect, imageUploadMiddleware.single('image'), uploadBlogPicture)
 
 export default router

@@ -43,3 +43,16 @@ export type commentDataTypes = {
   content: string;
   createdAt: string;
 };
+
+export enum fetchType {
+  GET = "GET",
+  POST = "POST",
+  PATCH = "PATCH",
+  DELETE = "DELETE",
+}
+
+export type FetchOptions = {
+  revalidate?: number;
+  noCache?: boolean;
+  tags?: string[];
+};

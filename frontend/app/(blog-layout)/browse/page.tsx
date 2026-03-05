@@ -12,7 +12,6 @@ type PageProps = {
     }>
 }
 
-export const dynamic = 'force-dynamic';
 
 export default async function BrowsePage({ searchParams }: PageProps) {
     const { searchText, startDate, endDate, pageNum = "1" } = await searchParams

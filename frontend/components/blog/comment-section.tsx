@@ -78,7 +78,7 @@ export default function CommentSection(
 
         try {
             setIsDeleting(true)
-            await deleteComment(commentId)
+            await deleteComment(commentId, blogId)
             setComments(prev => prev.filter(c => c._id !== commentId));
             setTotalComments(prev => prev - 1)
         } catch (error) {

@@ -5,7 +5,6 @@ import { registerSubmit } from '@/lib/auth';
 import { Checkbox, Input } from 'antd';
 import { useState } from 'react';
 import { authFormTypes } from '@/types';
-import { redirect } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { loginAsync } from '@/state/user/authSlice';
 import Link from 'next/link';

@@ -38,7 +38,7 @@ export function AuthHeader() {
                         text-orange-600 p-2 px-3 rounded-xl font-bold  cursor-pointer 
                         hover:scale-102 transition-all
                         duration-500 ease-in-out"
-                    href={'/auth'}>Login</Link>
+                    href={`/auth?callbackUrl=${encodeURIComponent(pathname)}`}>Login</Link>
             }
 
         </div>

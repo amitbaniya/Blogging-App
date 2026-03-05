@@ -7,6 +7,7 @@ import mainIcon from '@/app/icon.png'
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Ink & Insights | Auth',
@@ -30,7 +31,7 @@ export default function AuthInternalLayout({
                     <div className='w-15'>
                         <Image src={mainIcon} alt='Main Icon' />
                     </div>
-                    <h1>Ink & Insights</h1>
+                    <Link href={'/'}><h1>Ink & Insights</h1></Link>
                 </div>
                 <div className='flex flex-col gap-7'>
                     <div className=' flex items-center gap-3 bg-gray-100/70 px-2 py-1 rounded-4xl border-gray-200 border w-fit'>

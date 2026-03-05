@@ -1,7 +1,7 @@
 'use client'
 import MainHeader from '@/components/header/main-header'
 import { useAppSelector } from '@/state/hooks'
-import { redirect } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
 import { showToast } from "nextjs-toast-notify";
 
 export default function LoggedInLayout({
@@ -9,6 +9,7 @@ export default function LoggedInLayout({
 }: {
     children: React.ReactNode
 }) {
+    const pathname = usePathname();
 
     let content = <></>
     const user = useAppSelector((state) => state.auth)
@@ -25,7 +26,7 @@ export default function LoggedInLayout({
                 progress: false
             });
         }
-        redirect('/auth')
+        redirect(`/auth?callbackUrl=${encodeURIComponent(pathname)}`)
     }
 
     if (!user.loading && user.isAuthenticated) {

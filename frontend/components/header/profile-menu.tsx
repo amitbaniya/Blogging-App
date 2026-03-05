@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/state/hooks";
 import { logoutAsync } from "@/state/user/authSlice";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default function ProfileMenu() {
     const [menuOpen, setMenuOpen] = useState(false)
@@ -12,7 +13,13 @@ export default function ProfileMenu() {
     const dispatch = useAppDispatch()
 
     async function handleLogout() {
-        dispatch(logoutAsync())
+        try {
+            dispatch(logoutAsync())
+        } catch (error) {
+            console.log(error);
+        } finally {
+            redirect('/')
+        }
     }
 
 

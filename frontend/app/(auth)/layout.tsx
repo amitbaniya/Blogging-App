@@ -2,7 +2,7 @@
 import '@/app/globals.css'
 import { useAppSelector } from '@/state/hooks'
 import { redirect } from 'next/navigation'
-
+import { useSearchParams } from 'next/navigation';
 
 
 export default function AuthLayout({
@@ -10,13 +10,15 @@ export default function AuthLayout({
 }: {
     children: React.ReactNode
 }) {
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get('callbackUrl') || '/';
     const user = useAppSelector((state) => state.auth)
     if (user.loading && !user.error) {
         return (<p>Loading...</p>)
     }
 
     if (!user.loading && user.isAuthenticated) {
-        redirect('/')
+        redirect(callbackUrl);
     }
 
     if (!user.loading && !user.isAuthenticated) {
@@ -26,6 +28,5 @@ export default function AuthLayout({
             </>
         )
     }
-
 
 }

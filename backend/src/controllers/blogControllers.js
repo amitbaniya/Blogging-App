@@ -124,7 +124,6 @@ export async function getAll(req, res) {
             .skip(skip)
             .limit(limit);
 
-
         return res.status(200).json({
             blogList, totalPages, message: "Blogs retrieved successfully"
         })

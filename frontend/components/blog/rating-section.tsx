@@ -10,8 +10,6 @@ import { useParams } from "next/navigation";
 import { RouteParams } from "@/types";
 import { useMounted } from "@/lib/hooks";
 
-
-
 export default function RatingSection(
     { initialRating, initialRatingCount = 0 }:
         {
@@ -47,7 +45,7 @@ export default function RatingSection(
         if (user.isAuthenticated) {
             ratingStatus()
         }
-    }, []);
+    }, [user.isAuthenticated, blogId]);
 
     async function ratingHandler(newRating: number) {
         setIsRating(true);

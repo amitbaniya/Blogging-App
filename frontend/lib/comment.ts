@@ -1,8 +1,10 @@
 import api from "./axios";
+import Revalidation from "./revalidation";
 
 export async function createComment(blogId: string, content: string) {
   try {
     const response = await api.post(`/comment/create/${blogId}`, { content });
+    await Revalidation([`blog-${blogId}`, "blogList"]);
     return response.data.comment;
   } catch (error: any) {
     console.log(error.message);
@@ -10,9 +12,10 @@ export async function createComment(blogId: string, content: string) {
   }
 }
 
-export async function deleteComment(commentId: string) {
+export async function deleteComment(commentId: string, blogId: string) {
   try {
     const response = await api.delete(`/comment/remove/${commentId}`);
+    await Revalidation([`blog-${blogId}`, "blogList"]);
     return response.data.comment;
   } catch (error: any) {
     console.log(error.message);

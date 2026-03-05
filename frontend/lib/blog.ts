@@ -1,10 +1,13 @@
-import { blogDataTypes } from "@/types";
+import { blogDataTypes, fetchType } from "@/types";
 import api from "./axios";
 import { notFound } from "next/navigation";
+import fetchAPI from "./fetch";
+import Revalidation from "./revalidation";
 
 export async function createBlog() {
   try {
     const response = await api.post("/blog/create");
+    await Revalidation(["publisherBlogList"]);
     return response.data.blogId;
   } catch (error: any) {
     console.log(error.message);
@@ -25,6 +28,7 @@ export async function getPublisherBlog(blogId: string) {
 export async function saveBlog(blogId: string, blog: blogDataTypes) {
   try {
     const response = await api.patch(`/blog/save/${blogId}`, blog);
+    await Revalidation(["blogList", `blog-${blogId}`, "blogs"]);
     return response.data.updatedAt;
   } catch (error: any) {
     console.log(error.message);
@@ -35,6 +39,7 @@ export async function saveBlog(blogId: string, blog: blogDataTypes) {
 export async function publishBlog(blogId: string) {
   try {
     const response = await api.patch(`/blog/publish/${blogId}`);
+    await Revalidation(["blogList", `blog-${blogId}`]);
     return response.data;
   } catch (error: any) {
     console.log(error.message);
@@ -49,10 +54,13 @@ export async function getBlogList(
   currentPage: number = 1,
 ) {
   try {
-    const response = await api.get(
+    const response = await fetchAPI(
       `/blog/get?searchText=${searchText}&startDate=${startDate}&endDate=${endDate}&pageNum=${currentPage}`,
+      fetchType.GET,
+      {},
+      { revalidate: 60, tags: ["blogList"] },
     );
-    return response.data;
+    return response;
   } catch (error: any) {
     console.log(error.message);
     throw error;
@@ -61,8 +69,13 @@ export async function getBlogList(
 
 export async function getBlog(blogId: string) {
   try {
-    const response = await api.get(`/blog/get/${blogId}`);
-    return response.data.blog;
+    const response = await fetchAPI(
+      `/blog/get/${blogId}`,
+      fetchType.GET,
+      {},
+      { revalidate: 60, tags: [`blog-${blogId}`, "blogs"] },
+    );
+    return response.blog;
   } catch (error: any) {
     console.log("get Error", error);
     if (error.status === 404) {
@@ -94,10 +107,13 @@ export async function getPublisherBlogList(
   currentPage: number = 1,
 ) {
   try {
-    const response = await api.get(
+    const response = await fetchAPI(
       `/blog/publisher/get?searchText=${searchText}&startDate=${startDate}&endDate=${endDate}&pageNum=${currentPage}`,
+      fetchType.GET,
+      {},
+      { revalidate: 60, tags: ["publisherBlogList", "blogList"] },
     );
-    return response.data;
+    return response;
   } catch (error: any) {
     console.log(error.message);
     throw error;

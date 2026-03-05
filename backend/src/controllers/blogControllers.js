@@ -12,6 +12,7 @@ export async function create(req, res) {
         return res.status(200).json({ blogId: blog._id, message: "Blog created successfully" })
     }
     catch (error) {
+        console.log(error)
         return res.status(500).json({ message: "Something went wrong." })
     }
 }
@@ -138,7 +139,7 @@ export async function getAll(req, res) {
 export const uploadBlogPicture = async (req, res) => {
     try {
         const blogId = req.params.blogId;
-
+        console.log(blogId)
         if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
         const imageUrl = req.file.path;
         const secretUrl = req.file.filename;

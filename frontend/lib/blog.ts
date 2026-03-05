@@ -106,13 +106,10 @@ export async function getPublisherBlogList(
   currentPage: number = 1,
 ) {
   try {
-    const response = await fetchAPI(
+    const response = await api.get(
       `/blog/publisher/get?searchText=${searchText}&startDate=${startDate}&endDate=${endDate}&pageNum=${currentPage}`,
-      fetchType.GET,
-      {},
-      { noCache: true },
     );
-    return response;
+    return response.data;
   } catch (error: any) {
     console.log(error.message);
     throw error;

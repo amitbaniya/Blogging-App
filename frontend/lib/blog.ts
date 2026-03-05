@@ -7,7 +7,6 @@ import Revalidation from "./revalidation";
 export async function createBlog() {
   try {
     const response = await api.post("/blog/create");
-    await Revalidation(["publisherBlogList"]);
     return response.data.blogId;
   } catch (error: any) {
     console.log(error.message);
@@ -111,7 +110,7 @@ export async function getPublisherBlogList(
       `/blog/publisher/get?searchText=${searchText}&startDate=${startDate}&endDate=${endDate}&pageNum=${currentPage}`,
       fetchType.GET,
       {},
-      { revalidate: 60, tags: ["publisherBlogList", "blogList"] },
+      { noCache: true },
     );
     return response;
   } catch (error: any) {

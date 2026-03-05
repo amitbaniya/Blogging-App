@@ -109,7 +109,7 @@ export async function getPublisherBlogList(
     const response = await api.get(
       `/blog/publisher/get?searchText=${searchText}&startDate=${startDate}&endDate=${endDate}&pageNum=${currentPage}`,
     );
-    return response;
+    return response.data;
   } catch (error: any) {
     console.log(error.message);
     throw error;

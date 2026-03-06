@@ -3,10 +3,10 @@
 import classes from "./blog-form.module.css"
 import { blogDataTypes, RouteParams } from "@/types";
 import { useEffect, useRef, useState } from "react";
-import { getPublisherBlog, saveBlog } from "@/lib/blog";
+import { deleteBlog, getPublisherBlog, saveBlog } from "@/lib/blog";
 import { notFound, useParams } from "next/navigation";
 import TextArea from "antd/es/input/TextArea";
-import { CloudFilled, CloudSyncOutlined } from '@ant-design/icons';
+import { CloudFilled, CloudSyncOutlined, DeleteOutlined } from '@ant-design/icons';
 import { showToast } from "nextjs-toast-notify";
 import PublishButton from "./publish-btn";
 import ContentEditor from "./blog-content-editor";
@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { getConvertedDate, getAgo } from "@/utils";
 import PictureUpload from "./picture-upload";
 import Revalidation from "@/lib/revalidation";
+import ConfirmationModal from "../ui/confirmation-modal";
 
 
 export default function BlogForm() {
@@ -24,6 +25,9 @@ export default function BlogForm() {
     const [blogDataLoading, setBlogDataLoading] = useState(true)
     const isFirstRun = useRef(true);
     const [canSave, setCanSave] = useState(false)
+
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+    const [deleteLoading, setDeleteLoading] = useState(false)
 
     const [blogData, setBlogData] = useState<blogDataTypes>(
         {
@@ -37,7 +41,8 @@ export default function BlogForm() {
                 _id: "",
                 name: "",
                 imageUrl: ""
-            }
+            },
+            publishedOn: ""
         }
     )
     const [saveLoading, setSaveLoading] = useState(false)
@@ -49,6 +54,7 @@ export default function BlogForm() {
         setBlogData(prev => ({ ...prev, [name]: value }))
 
     }
+
 
     useEffect(() => {
         async function fetchBlogData() {
@@ -110,50 +116,88 @@ export default function BlogForm() {
     }
 
 
+
+    const handleDelete = async () => {
+        try {
+            setDeleteLoading(true)
+            await deleteBlog(blogId)
+
+        }
+        catch (error) {
+            console.log(error)
+
+        } finally {
+            setDeleteLoading(false)
+            setShowConfirmationModal(false)
+            router.replace('/publisher-blogs')
+        }
+    }
+
     return (
-        <form className=' flex flex-col gap-5 w-full max-w-300 h-full p-5'>
-            <div className="flex flex-row items-center justify-between flex-wrap">
-                <div className="flex flex-col opacity-50">
-                    <p className="text-sm"><span className="text-base font-bold">Created on:</span> {getConvertedDate(blogData.createdAt)}</p>
-                    <p className="text-sm"><span className="text-base font-bold">Updated at:</span> {getConvertedDate(blogData.updatedAt)} </p>
-                </div>
-                <div className="flex items-center gap-5">
-                    <div className="opacity-50 flex items-center gap-3">
-                        <p className="text-sm"> {getAgo(blogData.updatedAt)} </p>
-                        {!saveLoading ?
-                            <>
-                                <CloudFilled /> Saved
-                            </> :
-                            <>
-                                <CloudSyncOutlined /> Saving <span className="loader" />
-                            </>}
-                    </div>
-                    {blogData.published && <>
-                        <span className="opacity-50">|</span>
-                        <span className="opacity-50">
-                            Published
-                        </span>
-                    </>
-                    }
-                    <PublishButton status={blogData.published} setBlogData={setBlogData} />
-                </div>
-            </div>
-            <TextArea
-                autoSize={{ minRows: 1, maxRows: 5 }}
-                className={classes.input_field}
-                placeholder="Enter your blog title"
-                name='title'
-                value={blogData.title}
-                onChange={handleChange}
+        <>
+            {showConfirmationModal && <ConfirmationModal title="Delete this blog?"
+                message="Are you sure? This action cannnot be undone and your work will be permanently removed."
+                handleSubmit={handleDelete}
+                setShowModal={setShowConfirmationModal}
+                buttonText="Delete Permanently"
+                loading={deleteLoading}
             />
+            }
+            <form className=' flex flex-col gap-5 w-full max-w-300 h-full p-5'>
+                <div className="flex flex-row items-center justify-between flex-wrap">
+                    <div className="flex flex-col opacity-50">
+                        <p className="text-sm"><span className="text-base font-bold">Created on:</span> {getConvertedDate(blogData.createdAt)}</p>
+                        <p className="text-sm"><span className="text-base font-bold">Updated at:</span> {getConvertedDate(blogData.updatedAt)} </p>
+                        {blogData.published &&
+                            <p className="text-sm"><span className="text-base font-bold">Published on:</span> {getConvertedDate(blogData.publishedOn ?? "")} </p>
+                        }
+                    </div>
+                    <div className="flex items-center gap-5">
+                        <div className="opacity-50 flex items-center gap-3">
+                            <p className="text-sm"> {getAgo(blogData.updatedAt)} </p>
+                            {!saveLoading ?
+                                <>
+                                    <CloudFilled /> Saved
+                                </> :
+                                <>
+                                    <CloudSyncOutlined /> Saving <span className="loader" />
+                                </>}
+                        </div>
+                        {blogData.published && <>
+                            <span className="opacity-50">|</span>
+                            <span className="opacity-50">
+                                Published
+                            </span>
+                        </>
+                        }
+
+                        <button type='button' onClick={() => setShowConfirmationModal(true)}
+                            className="text-[#EF4444] p-2 px-3  
+                            font-bold cursor-pointer 
+                            hover:scale-102 transition-all
+                            duration-500 ease-in-out flex gap-2">
+                            <DeleteOutlined /> Delete
+                        </button>
+                        <PublishButton status={blogData.published} setBlogData={setBlogData} />
+                    </div>
+                </div>
+                <TextArea
+                    autoSize={{ minRows: 1, maxRows: 5 }}
+                    className={classes.input_field}
+                    placeholder="Enter your blog title"
+                    name='title'
+                    value={blogData.title}
+                    onChange={handleChange}
+                />
 
 
-            <div className='flex-1'>
-                <ContentEditor content={blogData.content} setBlogData={setBlogData} />
-            </div>
-            <PictureUpload image={blogData.imageUrl} setBlogData={setBlogData} />
+                <div className='flex-1'>
+                    <ContentEditor content={blogData.content} setBlogData={setBlogData} />
+                </div>
+                <PictureUpload image={blogData.imageUrl} setBlogData={setBlogData} />
 
-        </form>
+            </form>
+        </>
     )
 }
 

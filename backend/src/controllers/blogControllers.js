@@ -2,6 +2,8 @@
 import Blog from "../models/blogModel.js"
 import { v2 as cloudinary } from 'cloudinary';
 import Comment from "../models/commentModel.js";
+import Rating from "../models/ratingModel.js"
+
 
 export async function create(req, res) {
     try {
@@ -139,7 +141,7 @@ export async function getAll(req, res) {
 export const uploadBlogPicture = async (req, res) => {
     try {
         const blogId = req.params.blogId;
-        console.log(blogId)
+
         if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
         const imageUrl = req.file.path;
         const secretUrl = req.file.filename;
@@ -214,6 +216,23 @@ export async function getAllPublisher(req, res) {
         console.log(error)
         return res.status(500).json({ message: "Something went wrong." })
     }
+}
+
+
+export async function deleteBlog(req, res) {
+    try {
+        const blogId = req.params.blogId;
+        await Comment.deleteMany({ blog: blogId })
+        await Rating.deleteMany({ blog: blogId })
+        await Blog.deleteOne({ _id: blogId })
+
+        return res.status(200).json({ message: "Blog deletion successful." })
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: "Something went wrong." })
+    }
+
 }
 
 

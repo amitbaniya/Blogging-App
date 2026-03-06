@@ -20,6 +20,7 @@ export type blogDataTypes = {
     name: string;
     imageUrl: string;
   };
+  publishedOn?: string;
 };
 
 export type RouteParams = {

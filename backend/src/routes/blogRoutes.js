@@ -1,6 +1,6 @@
 import express from "express"
 import { protect } from "../middleware/authMiddleware.js"
-import { create, getAll, getAllPublisher, getBlog, publish, save, uploadBlogPicture } from "../controllers/blogControllers.js"
+import { create, deleteBlog, getAll, getAllPublisher, getBlog, publish, save, uploadBlogPicture } from "../controllers/blogControllers.js"
 import { blogProtect } from "../middleware/blogMiddleware.js"
 import { imageUploadMiddleware } from "../middleware/imageUploadMiddleware.js"
 
@@ -14,5 +14,7 @@ router.get("/get", getAll)
 router.get("/publisher/get", protect, getAllPublisher)
 router.get("/get/:blogId", getBlog)
 router.patch("/picture-upload/:blogId", protect, blogProtect, imageUploadMiddleware.single('image'), uploadBlogPicture)
+router.delete("/delete/:blogId", protect, blogProtect, deleteBlog)
+
 
 export default router

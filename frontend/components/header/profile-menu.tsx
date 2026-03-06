@@ -30,7 +30,7 @@ export default function ProfileMenu() {
                 <div className="absolute top-[110%] 
                             right-0 border bg-[#FFFBEB]
                             p-3 w-25 border-orange-600 rounded-xl
-                            text-orange-600 font-semibold text-sm flex flex-col gap-2 z-1000">
+                            text-orange-600 font-semibold text-sm flex flex-col gap-2 z-2">
                     <Link href={'/profile'} className="
                                 cursor-pointer 
                                 hover:scale-102 transition-all

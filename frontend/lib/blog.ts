@@ -115,3 +115,14 @@ export async function getPublisherBlogList(
     throw error;
   }
 }
+
+export async function deleteBlog(blogId: string) {
+  try {
+    const response = await api.delete(`/blog/delete/${blogId}`);
+    await Revalidation(["blogList"]);
+    return response.data;
+  } catch (error: any) {
+    console.log(error.message);
+    throw error;
+  }
+}

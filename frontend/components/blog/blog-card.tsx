@@ -27,7 +27,7 @@ export default function BlogCard(
                 cover={
                     <img
                         draggable={false}
-                        alt="example"
+                        alt={blog.imageUrl ? blog.imageUrl : defaultImage}
                         src={blog.imageUrl ? blog.imageUrl : defaultImage}
                         className="h-50 object-cover"
                     />

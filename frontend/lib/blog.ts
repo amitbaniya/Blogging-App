@@ -126,3 +126,13 @@ export async function deleteBlog(blogId: string) {
     throw error;
   }
 }
+
+export async function getAIReply(prompt: string) {
+  try {
+    const response = await api.post("/ai/get/", { prompt });
+    return response.data.reply;
+  } catch (error: any) {
+    console.log(error.message);
+    throw error;
+  }
+}

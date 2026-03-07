@@ -9,6 +9,7 @@ import authRoutes from "./routes/authRoutes.js"
 import blogRoutes from "./routes/blogRoutes.js"
 import commentRoutes from "./routes/commentRoutes.js"
 import ratingRoutes from "./routes/ratingRoutes.js"
+import aiRoutes from "./routes/aiRoutes.js"
 
 
 
@@ -29,8 +30,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/blog", blogRoutes)
 app.use("/api/comment", commentRoutes)
 app.use("/api/rating", ratingRoutes)
-
-
+app.use("/api/ai", aiRoutes)
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`)

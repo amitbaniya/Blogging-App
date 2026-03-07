@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default async function ShareBlog() {
 
     return (
-        <main className='flex flex-col justify-center items-center h-full'>
+        <main className='flex flex-col justify-center items-center lg:h-full'>
             <BlogForm />
         </main>
 

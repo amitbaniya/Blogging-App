@@ -6,7 +6,7 @@ import './blog.css'
 export default function PurifiedContent({ content, short = false }: { content: string, short: boolean }) {
     return (
         <div
-            className={short ? 'purified-short-content' : ''}
+            className={short ? 'purified-short-content' : 'text-justify'}
             dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(content),
             }}

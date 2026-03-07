@@ -13,7 +13,7 @@ export default async function fetchAPI(
     const completeURL = process.env.NEXT_PUBLIC_API_URL + url;
     const cookieStore = await cookies();
     const cookieString = cookieStore.toString();
-    console.log(cookieString);
+
     const nextOptions: any = {};
     if (options?.revalidate) nextOptions.revalidate = options.revalidate;
     if (options?.tags) nextOptions.tags = options.tags;

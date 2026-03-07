@@ -42,7 +42,7 @@ export default function ProfilePictureForm() {
 
             {previewImage && previewImage !== undefined ?
                 <div className=" group w-25 h-25 relative rounded-full hover:scale-103 duration-300 ease-in-out overflow-hidden ">
-                    <Image src={previewImage} alt='Profile Image' fill className="object-cover" />
+                    <Image src={previewImage} alt={user.name} fill className="object-cover" />
                     {isUploading &&
                         <div className="flex bg-gray-900/40 absolute 
                     w-full h-full border border-dashed rounded-2xl

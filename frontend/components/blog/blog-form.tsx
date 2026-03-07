@@ -3,7 +3,7 @@
 import classes from "./blog-form.module.css"
 import { blogDataTypes, RouteParams } from "@/types";
 import { useEffect, useRef, useState } from "react";
-import { deleteBlog, getPublisherBlog, saveBlog } from "@/lib/blog";
+import { deleteBlog, getAIReply, getPublisherBlog, saveBlog } from "@/lib/blog";
 import { notFound, useParams } from "next/navigation";
 import TextArea from "antd/es/input/TextArea";
 import { CloudFilled, CloudSyncOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -28,6 +28,8 @@ export default function BlogForm() {
 
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
     const [deleteLoading, setDeleteLoading] = useState(false)
+    const [aiContentLoading, setAiContentLoading] = useState(false)
+
 
     const [blogData, setBlogData] = useState<blogDataTypes>(
         {
@@ -133,6 +135,25 @@ export default function BlogForm() {
         }
     }
 
+
+    const handleAIGeneration = async () => {
+        try {
+
+            if (!blogData.title) {
+                showToast.error("Title is required for content generation!", { duration: 4000, position: "top-center" });
+                return
+            }
+            setAiContentLoading(true)
+            const reply = await getAIReply(blogData.title)
+            setBlogData(prev => ({ ...prev, content: reply }))
+        }
+        catch (error) {
+            console.log(error)
+        } finally {
+            setAiContentLoading(false)
+        }
+    }
+
     return (
         <>
             {showConfirmationModal && <ConfirmationModal title="Delete this blog?"
@@ -143,7 +164,7 @@ export default function BlogForm() {
                 loading={deleteLoading}
             />
             }
-            <form className=' flex flex-col gap-5 w-full max-w-300 h-full p-5'>
+            <form className=' flex flex-col gap-5 w-full max-w-300 lg:h-full p-5'>
                 <div className="flex flex-row items-center justify-between flex-wrap">
                     <div className="flex flex-col opacity-50">
                         <p className="text-sm"><span className="text-base font-bold">Created on:</span> {getConvertedDate(blogData.createdAt)}</p>
@@ -152,7 +173,7 @@ export default function BlogForm() {
                             <p className="text-sm"><span className="text-base font-bold">Published on:</span> {getConvertedDate(blogData.publishedOn ?? "")} </p>
                         }
                     </div>
-                    <div className="flex items-center gap-5">
+                    <div className="flex items-center gap-5 flex-wrap">
                         <div className="opacity-50 flex items-center gap-3">
                             <p className="text-sm"> {getAgo(blogData.updatedAt)} </p>
                             {!saveLoading ?
@@ -191,8 +212,16 @@ export default function BlogForm() {
                 />
 
 
-                <div className='flex-1'>
+                <div className='lg:flex-1 relative h-200'>
                     <ContentEditor content={blogData.content} setBlogData={setBlogData} />
+                    <button
+                        type='button'
+                        className="absolute bottom-0 right-0 m-3 rounded-full bg-green-200 p-3 font-bold group cursor-pointer"
+                        onClick={handleAIGeneration}>
+                        {aiContentLoading ? <span className="loader" /> :
+                            <p>G<span className="hidden group-hover:inline">enerate Content</span></p>
+                        }
+                    </button>
                 </div>
                 <PictureUpload image={blogData.imageUrl} setBlogData={setBlogData} />
 

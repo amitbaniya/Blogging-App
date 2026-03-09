@@ -82,15 +82,15 @@ export default function RatingSection(
     }
 
     return (
-        <section className="">
+        <section className="p-10 rounded-lg border-gray-500/50 border max-md:p-5">
             {!user.isAuthenticated ?
-                <div className="w-full flex flex-col p-10 border rounded-lg border-gray-500/50 justify-center items-center gap-2">
+                <div className="w-full flex flex-col justify-center items-center gap-2">
                     <p className="font-extrabold text-2xl"> Community Rating</p>
                     <p className="opacity-60">Sign in to contribute your rating to this article.</p>
 
                     <div className="flex flex-col justify-center items-center gap-3">
                         <Rate value={rating} disabled />
-                        <p className="font-bold text-orange-600 flex gap-3 items-center">
+                        <p className="font-bold text-orange-600 flex gap-3 items-center flex-wrap">
                             {rating === 0 && ratingCount === 0 ?
                                 <>
                                     No reviews yet.</>
@@ -106,14 +106,14 @@ export default function RatingSection(
                     <Link href='/auth' className="p-3 border rounded-xl mt-5 ">Login</Link>
                 </div>
                 :
-                <div className="w-full flex flex-col p-10 border rounded-lg border-gray-500/50 justify-center items-center gap-2">
+                <div className="w-full flex flex-col justify-center items-center gap-2">
                     <p className="font-extrabold text-lg"> How would you like to rating this article?</p>
                     <p className="opacity-60">Your feedback helps us improve our content quality.</p>
 
                     <div className="flex flex-col justify-center items-center gap-2">
                         <p className="font-bold text-orange-600">Your Rating</p>
                         <Rate value={userRating} onChange={ratingHandler} disabled={isRating} />
-                        <p className="font-bold text-orange-600 flex gap-3 items-center">
+                        <p className="font-bold text-orange-600 flex gap-3 items-center flex-wrap">
                             {rating === 0 && ratingCount === 0 ?
                                 <>
                                     No reviews yet.</>

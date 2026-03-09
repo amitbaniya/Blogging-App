@@ -35,6 +35,6 @@ export async function getAIReply(req, res) {
         res.status(200).json({ reply: response.text, message: "generation successful" })
     } catch (error) {
         console.log(error)
-        return res.status(500).json({ message: "Something went wrong." })
+        return res.status(500).json({ message: " Server Error." })
     }
 }

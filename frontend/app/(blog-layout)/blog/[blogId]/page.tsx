@@ -48,7 +48,7 @@ export default async function BlogPage({ params }: { params: Promise<{ blogId: s
                             className=" hover:scale-103 transition-all ease-in-out duration-300 object-contain" />
                     </div>
 
-                    <div className="w-full rounded-2xl  bg-white border border-gray-400/40 p-15 text-lg">
+                    <div className="w-full rounded-2xl  bg-white border border-gray-400/40 p-15 text-lg max-md:p-5">
                         <PurifiedContent content={blog.content} short={false} />
                     </div>
                     <RatingSection initialRating={blog.rating} initialRatingCount={blog.ratingCount} />

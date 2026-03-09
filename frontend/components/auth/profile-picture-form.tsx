@@ -37,11 +37,11 @@ export default function ProfilePictureForm() {
 
 
     return (
-        <div className='w-full flex gap-5 bg-white p-5 rounded-2xl border-gray-200 border'>
+        <div className='w-full flex gap-5 bg-white p-5 rounded-2xl border-gray-200 border flex-wrap'>
             <input type='file' name="blogImage" onChange={handleImageChange} ref={fileInputRef} accept="image/*" hidden />
 
             {previewImage && previewImage !== undefined ?
-                <div className=" group w-25 h-25 relative rounded-full hover:scale-103 duration-300 ease-in-out overflow-hidden ">
+                <div className="w-25 h-25 relative rounded-full overflow-hidden min-w-25 min-h-25">
                     <Image src={previewImage} alt={user.name} fill className="object-cover" />
                     {isUploading &&
                         <div className="flex bg-gray-900/40 absolute 
@@ -56,7 +56,7 @@ export default function ProfilePictureForm() {
                 <Avatar size={100} icon={<UserOutlined />} />
             }
 
-            <div className='flex flex-col justify-between max-w-80'>
+            <div className='flex flex-col justify-between max-w-80 flex-wrap'>
                 <h2 className='text-s font-bold'>Profile Photo</h2>
                 <p className='text-xs opacity-70'>Accepted formats: JPG, PNG. Max size 2MB. A square image works best.</p>
                 <div className='flex gap-3 '>

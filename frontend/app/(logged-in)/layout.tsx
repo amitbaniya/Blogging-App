@@ -26,6 +26,7 @@ export default function LoggedInLayout({
                 progress: false
             });
         }
+        console.log("Error")
         redirect(`/auth?callbackUrl=${encodeURIComponent(pathname)}`)
     }
 

@@ -4,7 +4,7 @@ import classes from "./blog-form.module.css"
 import { blogDataTypes, RouteParams } from "@/types";
 import { useEffect, useRef, useState } from "react";
 import { deleteBlog, getAIReply, getPublisherBlog, saveBlog } from "@/lib/blog";
-import { notFound, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import TextArea from "antd/es/input/TextArea";
 import { CloudFilled, CloudSyncOutlined, DeleteOutlined } from '@ant-design/icons';
 import { showToast } from "nextjs-toast-notify";
@@ -14,7 +14,6 @@ import CustomLoading from "../loading/loading";
 import { useRouter } from "next/navigation";
 import { getConvertedDate, getAgo } from "@/utils";
 import PictureUpload from "./picture-upload";
-import Revalidation from "@/lib/revalidation";
 import ConfirmationModal from "../ui/confirmation-modal";
 
 
@@ -149,6 +148,7 @@ export default function BlogForm() {
         }
         catch (error) {
             console.log(error)
+            showToast.error("Internal Server Error!", { duration: 4000, position: "top-center" });
         } finally {
             setAiContentLoading(false)
         }

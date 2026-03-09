@@ -21,7 +21,7 @@ export default function AuthInternalLayout({
 }) {
     return (
         <div className="grid w-full h-screen grid-cols-10 max-md:grid-cols-1 text-black p-0">
-            <div className=' h-screen p-10 pr-40 max-md:h-32 col-span-4 flex flex-col justify-between'
+            <div className=' h-screen p-10 pr-40 max-md:h-32 col-span-4 flex flex-col justify-between max-md:hidden'
                 style={{
                     backgroundImage: `url(${authBackground.src})`,
                     backgroundSize: 'cover',
@@ -57,6 +57,14 @@ export default function AuthInternalLayout({
                     </div>
                 </div>
 
+            </div>
+            <div className='hidden w-full bg-[#F7DFC7] max-md:block'>
+                <div className='flex items-center font-bold text-2xl gap-2 py-4'>
+                    <div className='w-15'>
+                        <Image src={mainIcon} alt='Main Icon Mini' />
+                    </div>
+                    <Link href={'/'}><h1>Ink & Insights</h1></Link>
+                </div>
             </div>
             <div className='bg-white h-screen p-10 flex  items-center  col-span-6 justify-center max-md:items-start'>
                 {children}

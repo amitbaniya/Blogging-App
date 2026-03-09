@@ -66,7 +66,7 @@ export default function ProfileUpdateForm() {
     return (
         <form className=' flex flex-col gap-10' onSubmit={submitHandler}>
             <div className='flex flex-col gap-5'>
-                <div className='flex flex-row gap-5'>
+                <div className='flex flex-row gap-5 flex-wrap'>
                     <div className='flex flex-col gap-1 w-full'>
                         <label className='text-[14px] font-bold opacity-80' htmlFor='name'>Full Name</label>
                         <Input type='text' id="name" name="name" placeholder='John Doe' value={userData.name} onChange={handleChange}

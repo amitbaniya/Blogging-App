@@ -1,30 +1,48 @@
 'use client'
 import { Avatar } from "antd";
 import { UserOutlined } from '@ant-design/icons';
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/state/hooks";
 import { logoutAsync } from "@/state/user/authSlice";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { showToast } from "nextjs-toast-notify";
 
 export default function ProfileMenu() {
     const [menuOpen, setMenuOpen] = useState(false)
     const user = useAppSelector(state => state.auth)
     const dispatch = useAppDispatch()
 
+    const headerRef = useRef<HTMLDivElement>(null);
     async function handleLogout() {
         try {
             dispatch(logoutAsync())
+            showToast.success("Logged out succesfully", {
+                duration: 4000,
+                position: "top-center",
+                transition: "bounceIn",
+                progress: false
+            });
         } catch (error) {
             console.log(error);
-        } finally {
-            redirect('/')
         }
     }
 
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+
+            if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+                setMenuOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [setMenuOpen]);
+
 
     return (
-        <div className="relative cursor-pointer ">
+        <div className="relative cursor-pointer " ref={headerRef}>
             <Avatar size={40} icon={<UserOutlined />} src={user.imageUrl} onClick={() => setMenuOpen(prev => !prev)} />
             {menuOpen &&
                 <div className="absolute top-[110%] 
